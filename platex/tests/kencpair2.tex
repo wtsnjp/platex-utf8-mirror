@@ -13,4 +13,8 @@
 \DeclareKanjiFamily{JJTX1}{mc}{}
 \DeclareFontShape{JJTX1}{mc}{m}{n}{ <-> tmin10 }{}
 %
-%\KanjiEncodingPair{JJYX1}{JJTX1}% => 
+%\KanjiEncodingPair{JJYX1}{JJTX1}% => これが無いのは許されない
+\begin{document}
+\kanjiencoding{JJYX1}\selectfont
+\kanjiencoding{JJTX1}\selectfont
+\stop

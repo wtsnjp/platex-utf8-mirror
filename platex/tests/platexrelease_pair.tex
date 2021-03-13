@@ -5,4 +5,17 @@
 % silence normal (p)latexrelease logging
 \def\GenericInfo#1#2{}
 
-% 
+% 本来のテストであれば、以下の行を有効にすべき。
+% しかし、tests/ に
+% \RequirePackage{exppl2e}
+% という内容の platex.cfg が置かれているので、
+% その時点で platexrelease が読まれているはず。
+
+%\RequirePackage[0000/00/00]{platexrelease}
+
+% ちなみに、上記のコードだけを含むソースを処理した結果のログに
+% Already applied:
+% が現れることはありえないはず。
+% https://github.com/latex3/latex2e/pull/78
+
+\stop

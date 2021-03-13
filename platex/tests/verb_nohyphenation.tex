@@ -13,3 +13,47 @@
 
 \begin{document}
 
+ハイフネーションが起きないかどうかテスト。
+
+1 elephant tortoise
+
+2 \verb|elephant tortoise|
+
+\verb|elephant tortoise|
+
+\end{document}
+
+
+%% LaTeX original
+\def\verb{\relax\ifmmode\hbox\else\leavevmode\null\fi
+  \bgroup
+    \verb@eol@error \let\do\@makeother \dospecials
+    \verbatim@font\@noligs
+    \@ifstar\@sverb\@verb}
+%% LaTeX (2017-04-15 candidate)
+\def\verb{\relax\ifmmode\hbox\else\leavevmode\null\fi
+  \bgroup
+    \verb@eol@error \let\do\@makeother \dospecials
+    \verbatim@font\@noligs
+    \language\l@nohyphenation
+    \@ifstar\@sverb\@verb}
+%% pLaTeX (ASCII)
+\def\verb{\relax\ifmmode\hbox\else\leavevmode\fi
+  \bgroup
+    \verb@eol@error \let\do\@makeother \dospecials
+    \verbatim@font\@noligs
+    \@ifstar\@sverb\@verb}
+%% pLaTeX (2017/04/08)
+\def\verb{\relax\ifmmode\hbox\else\leavevmode\fi
+  \bgroup
+    \verb@eol@error \let\do\@makeother \dospecials
+    \verbatim@font\@noligs
+    \language\l@nohyphenation
+    \@ifstar\@sverb\@verb}
+%% pLaTeX (candidate)
+\def\verb{\relax\ifmmode\hbox\else\leavevmode\vadjust{}\fi
+  \bgroup
+    \verb@eol@error \let\do\@makeother \dospecials
+    \verbatim@font\@noligs
+    \language\l@nohyphenation
+    \@ifstar\@sverb\@verb}

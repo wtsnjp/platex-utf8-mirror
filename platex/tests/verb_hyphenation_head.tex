@@ -15,4 +15,41 @@ Supercalifragilisticexpialidocious
 \makeatother
 \begin{document}
 
-verbatim
+verbatim環境がハイフネーションを抑制しても、途中のヘッダーで
+ハイフネーションが抑制されないことのテスト。
+
+a $x$
+
+zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz
+
+zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz
+
+zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz\\zzz
+\begin{verbatim}
+a
+ a
+  a
+   a
+    a
+     a
+      a
+       a
+        a
+         a
+          a
+a
+ a
+  a
+   a
+    a
+     a
+      a
+       a
+        a
+         a
+          a
+\end{verbatim}
+
+\clearpage
+
+\end{document}

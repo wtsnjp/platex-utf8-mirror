@@ -1,4 +1,15 @@
 \documentclass{article}
 \begin{document}
 
-% 
+% 数式モードでエラーにならないことを確認
+\tableofcontents
+
+\section{A}\label{secA}
+
+\section{B$\ref{secA}$}
+$\ref{secA}$
+\end{document}
+
+%% 以下、参考 %%
+「数式モード内の \ref でエラー」
+https://github.com/texjporg/platex/issues/55

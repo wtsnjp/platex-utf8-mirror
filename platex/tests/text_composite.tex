@@ -2,4 +2,47 @@
 %\RequirePackage{exppl2e}
 \documentclass{jarticle}
 \usepackage{lmodern}
-%\DeclareTextComposite{\"}{OT1}{
+%\DeclareTextComposite{\"}{OT1}{圏}{`点}% invalid
+\usepackage[utf8x]{inputenc}
+\usepackage[dvipdfmx]{hyperref}
+\DeclareTextCompositeCommand{\"}{OT1}{圏}{テン}
+\DeclareTextCompositeCommand{\"}{T1}{圏}{テン}
+\def\test{あ\AA あ\'eあ\'圏い\"圏うa\"圏a\AA a（\AA）\'e}
+\makeatletter
+\@tempcnta=128
+\loop\ifnum\@tempcnta<256
+  \xspcode\@tempcnta=3
+  \advance\@tempcnta1
+\repeat
+\begin{document}
+\sloppy
+\fontencoding{T1}\selectfont
+\section{G\"odel \AA ngstr\o m あいう(T1)}
+\xkanjiskip15pt
+\ybaselineshift10pt
+\test\par
+\ybaselineshift0pt
+\test
+
+\mathsurround20pt
+\test
+
+\edef\XA{\"o.\'o.\AA}
+{\ttfamily\meaning\XA}
+
+
+\fontencoding{OT1}\selectfont
+\section{G\"odel \AA ngstr\o m あいう(OT1)}
+\xkanjiskip15pt
+\ybaselineshift10pt
+\test\par
+\ybaselineshift0pt
+\test
+
+\mathsurround20pt
+\test
+
+\edef\XA{\"o.\'o.\AA}
+{\ttfamily \meaning\XA}
+
+\end{document}
