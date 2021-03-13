@@ -1,0 +1,1838 @@
+% \iffalse meta-comment
+%% File: platex.dtx
+%
+%  Copyright 1995,1996 ASCII Corporation.
+%  Copyright (c) 2010 ASCII MEDIA WORKS
+%  Copyright (c) 2016-2021 Japanese TeX Development Community
+%
+%  This file is part of the pLaTeX2e system (community edition).
+%  -------------------------------------------------------------
+%
+% \fi
+%
+% \iffalse
+%<*driver|pldoc>
+\ifx\JAPANESEtrue\undefined
+  \expandafter\newif\csname ifJAPANESE\endcsname
+  \JAPANESEtrue
+\fi
+%</driver|pldoc>
+% \fi
+%
+% \setcounter{StandardModuleDepth}{1}
+% \makeatletter
+%\ifJAPANESE
+% \def\chuui{\@ifnextchar[{\@chuui}{\@chuui[注意：]}}
+%\else
+% \def\chuui{\@ifnextchar[{\@chuui}{\@chuui[Attention: ]}}
+%\fi
+% \def\@chuui[#1]{\par\vskip.5\baselineskip
+%   \noindent{\em #1}\par\bgroup\gtfamily\sffamily}
+% \def\endchuui{\egroup\vskip.5\baselineskip}
+% \makeatother
+%
+% \iffalse
+%<*driver|pldoc>
+\def\eTeX{$\varepsilon$-\TeX}
+\def\pTeX{p\kern-.15em\TeX}
+\def\epTeX{$\varepsilon$-\pTeX}
+\def\pLaTeX{p\kern-.05em\LaTeX}
+\def\pLaTeXe{p\kern-.05em\LaTeXe}
+%</driver|pldoc>
+% \fi
+%
+% \StopEventually{}
+%
+% \iffalse
+%\ifJAPANESE
+% \changes{v1.0}{1995/05/08}{最初のバージョン}
+% \changes{v1.0a}{1995/08/25}{互換性について、\dst{}の使い方、参考文献を追加}
+% \changes{v1.0b}{1996/02/01}{\file{omake-sh.ins}, \file{omake-pl.ins}を
+%     \dst{}の変更にともなう変更をした}
+% \changes{v1.0c}{1997/01/23}{\dst{}にともなう変更}
+% \changes{v1.0c}{1997/01/23}{\LaTeX\ \textt{!<1996/12/01!>}に合わせて修正}
+% \changes{v1.0c}{1997/01/23}{gind.istとgglo.istを
+%        \$TEXMF/tex/latex2e/baseディレクトリからコピーしないようにした}
+% \changes{v1.0c}{1997/01/25}{pldoc.dicをfilecontents環境により作成}
+% \changes{v1.0c}{1997/01/29}{\file{pltpatch.ltx}を\file{plpatch.ltx}に名称変更}
+% \changes{v1.0d}{2016/01/27}{\pLaTeXe{}に付属するファイルの説明を更新}
+% \changes{v1.0d}{2016/01/27}{rmコマンド実行前に存在確認するようにした}
+% \changes{v1.0e}{2016/02/16}{platexreleaseの説明を追加}
+% \changes{v1.0f}{2016/04/12}{ドキュメントを更新}
+% \changes{v1.0g}{2016/05/07}{フォーマット作成時に\LaTeX{}のバナーを一旦保存}
+% \changes{v1.0h}{2016/05/08}{ドキュメントから\file{plpatch.ltx}を除外}
+% \changes{v1.0i}{2016/05/12}{一時コマンド\cs{orgdump}を最終的に未定義へ}
+% \changes{v1.0j}{2016/05/20}{pfltraceの説明を追加}
+% \changes{v1.0k}{2016/05/21}{変更履歴も出力するようにした}
+% \changes{v1.0l}{2016/06/19}{パッチレベルを\file{plvers.dtx}から取得}
+% \changes{v1.0m}{2016/08/26}{\file{platex.cfg}の読み込みを
+%    \file{plcore.ltx}から\file{platex.ltx}へ移動}
+% \changes{v1.0n}{2016/09/14}{\LaTeX{}のバナーの保存しかたを改良}
+% \changes{v1.0o}{2017/09/24}{パッチレベルが負の数の場合をpre-release扱いへ}
+% \changes{v1.0p}{2017/11/11}{\LaTeX{}のバナーを保存するコードを
+%    \file{platex.ltx}から\file{plcore.ltx}へ移動}
+% \changes{v1.0q}{2017/11/29}{英語版ドキュメントを追加}
+% \changes{v1.0r}{2017/12/02}{英語の参考文献も追加}
+% \changes{v1.0s}{2017/12/05}{デフォルト設定ファイルの読み込みを
+%    \file{plcore.ltx}から\file{platex.ltx}へ移動}
+% \changes{v1.0t}{2018/02/07}{ascmacパッケージを独立させた}
+% \changes{v1.0u}{2018/02/18}{nidanfloatパッケージを独立させた}
+% \changes{v1.0v}{2018/04/06}{最新のsource2eへの追随}
+% \changes{v1.0w}{2018/04/08}{安全のためフォーマット作成時の
+%    バナー表示をやめた}
+% \changes{v1.0x}{2018/09/03}{ドキュメントを更新}
+% \changes{v1.0x}{2018/09/03}{platexcheatに言及}
+% \changes{v1.0x}{2018/09/03}{plautopatchに言及}
+% \changes{v1.0y}{2018/09/22}{最終更新日を\file{pldoc.pdf}に表示}
+% \changes{v1.0z}{2019/09/29}{タイポ修正}
+% \changes{v1.1}{2020/03/24}{ドキュメントを更新}
+% \changes{v1.1a}{2020/09/26}{\file{plexpl3.dtx}を追加}
+% \changes{v1.1b}{2020/09/28}{defs読込後にフック追加}
+% \changes{v1.1c}{2021/02/25}{\file{latex.ltx}の読込チェック}
+%\else
+% \changes{v1.0}{1995/05/08}{first edition}
+% \changes{v1.0a}{1995/08/25}{Added 'Compatibility', `Usage of \dst{}'
+%    and `References'}
+% \changes{v1.0b}{1996/02/01}{Adjusted for the latest
+%    \dst\ (\file{omake-sh.ins} and \file{omake-pl.ins}.}
+% \changes{v1.0c}{1997/01/23}{Adjusted for the latest \dst.}
+% \changes{v1.0c}{1997/01/23}{Adjusted for \LaTeX\ \textt{!<1996/12/01!>}.}
+% \changes{v1.0c}{1997/01/23}{Don't copy gind.ist and gglo.ist from
+%        \$TEXMF/tex/latex2e/base directory.}
+% \changes{v1.0c}{1997/01/25}{Add to filecontents environment for pldoc.dic.}
+% \changes{v1.0c}{1997/01/29}{Rename \file{pltpatch.ltx} to \file{plpatch.ltx}.}
+% \changes{v1.0d}{2016/01/27}{Updated descriptions of \pLaTeXe\ files}
+% \changes{v1.0d}{2016/01/27}{Add -e test before rm command}
+% \changes{v1.0e}{2016/02/16}{Add a description of platexrelease}
+% \changes{v1.0f}{2016/04/12}{Update document.}
+% \changes{v1.0g}{2016/05/07}{Save \LaTeX\ banner}
+% \changes{v1.0h}{2016/05/08}{Exclude \file{plpatch.ltx} from the document}
+% \changes{v1.0i}{2016/05/12}{Undefine temporary command
+%    \cs{orgdump} in the end.}
+% \changes{v1.0j}{2016/05/20}{Add description of `pfltrace'}
+% \changes{v1.0k}{2016/05/21}{Print also changes.}
+% \changes{v1.0l}{2016/06/19}{Get the patch level from \file{plvers.dtx}}
+% \changes{v1.0m}{2016/08/26}{Moved loading \file{platex.cfg}
+%    from \file{plcore.ltx} to \file{platex.ltx}}
+% \changes{v1.0n}{2016/09/14}{Improved banner saving method}
+% \changes{v1.0o}{2017/09/24}{Allow negative patch level for pre-release}
+% \changes{v1.0p}{2017/11/11}{Moved banner saving code from
+%    \file{platex.ltx} to \file{plcore.ltx}}
+% \changes{v1.0q}{2017/11/29}{New English documentation added!}
+% \changes{v1.0r}{2017/12/02}{English references added}
+% \changes{v1.0s}{2017/12/05}{Moved loading default settings
+%    from \file{plcore.ltx} to \file{platex.ltx}}
+% \changes{v1.0t}{2018/02/07}{Moved ascmac package to separate bundle}
+% \changes{v1.0u}{2018/02/18}{Moved nidanfloat package to separate bundle}
+% \changes{v1.0v}{2018/04/06}{Sync with the latest \file{source2e.tex}}
+% \changes{v1.0w}{2018/04/08}{Stop showing banner during
+%    format generation for safety}
+% \changes{v1.0x}{2018/09/03}{Update document.}
+% \changes{v1.0x}{2018/09/03}{Mention platexcheat (Japanese only).}
+% \changes{v1.0x}{2018/09/03}{Mention plautopatch.}
+% \changes{v1.0y}{2018/09/22}{Show last update info on \file{pldoc.pdf}}
+% \changes{v1.0z}{2019/09/29}{Fix typos in document.}
+% \changes{v1.1}{2020/03/24}{Update document.}
+% \changes{v1.1a}{2020/09/26}{Add \file{plexpl3.dtx}}
+% \changes{v1.1b}{2020/09/28}{Add hook after loading defs}
+% \changes{v1.1c}{2021/02/25}{Check for \file{latex.ltx} status}
+%\fi
+% \fi
+%
+% \iffalse
+%<*driver>
+\NeedsTeXFormat{pLaTeX2e}
+% \fi
+\ProvidesFile{platex.dtx}[2021/02/25 v1.1c pLaTeX document file]
+% \iffalse
+\documentclass{jltxdoc}
+\usepackage{plext}
+\GetFileInfo{platex.dtx}
+\ifJAPANESE
+\title{\pLaTeXe{}について}
+\author{中野 賢 \& 日本語\TeX{}開発コミュニティ}
+\date{作成日：\filedate}
+\renewcommand{\refname}{参考文献}
+\GlossaryPrologue{\section*{変更履歴}%
+                  \markboth{変更履歴}{変更履歴}%
+                  \addcontentsline{toc}{section}{変更履歴}}
+\else
+\title{About \pLaTeXe{}}
+\author{Ken Nakano \& Japanese \TeX\ Development Community}
+\date{Date: \filedate}
+\renewcommand{\refname}{References}
+\GlossaryPrologue{\section*{Change History}%
+                  \markboth{Change History}{Change History}%
+                  \addcontentsline{toc}{section}{Change History}}
+\fi
+\makeatletter
+\ifJAPANESE
+\def\levelchar{>・}
+\fi
+\def\changes@#1#2#3{%
+  \let\protect\@unexpandable@protect
+  \edef\@tempa{\noexpand\glossary{#2\space#1\levelchar
+    \ifx\saved@macroname\@empty
+%     \space\actualchar\generalname: %% comment out (platex.dtx only)
+    \else
+      \expandafter\@gobble
+      \saved@macroname\actualchar
+      \string\verb\quotechar*%
+      \verbatimchar\saved@macroname
+      \verbatimchar:
+    \fi
+    #3}}%
+  \@tempa\endgroup\@esphack}
+\makeatother
+\RecordChanges
+\begin{document}
+   \MakeShortVerb{\+}
+   \maketitle
+   \DocInput{\filename}
+   \StopEventually{\end{document}}
+   \clearpage
+   % Make TeX shut up.
+   \hbadness=10000
+   \newcount\hbadness
+   \hfuzz=\maxdimen
+   \PrintChanges
+   \let\PrintChanges\relax
+\end{document}
+%</driver>
+% \fi
+%
+%
+%\ifJAPANESE
+% \changes{v1.0f}{2016/04/12}{ドキュメントを更新}
+% \changes{v1.0k}{2016/05/21}{変更履歴も出力するようにした}
+% \changes{v1.0q}{2017/11/29}{英語版ドキュメントを追加}
+% \changes{v1.0x}{2018/09/03}{ドキュメントを更新}
+% \changes{v1.0z}{2019/09/29}{タイポ修正}
+% \changes{v1.1}{2020/03/24}{ドキュメントを更新}
+%\else
+% \changes{v1.0f}{2016/04/12}{Update document.}
+% \changes{v1.0k}{2016/05/21}{Print also changes.}
+% \changes{v1.0q}{2017/11/29}{New English documentation added!}
+% \changes{v1.0x}{2018/09/03}{Update document.}
+% \changes{v1.0z}{2019/09/29}{Fix typos in document.}
+% \changes{v1.1}{2020/03/24}{Update document.}
+%\fi
+%\ifJAPANESE
+% \begin{chuui}
+% \pLaTeXe{}は、\LaTeXe{}を日本語組版用に拡張・調整したものです。
+% この文書では「コミュニティ版\pLaTeXe{}」について簡単に説明します。
+% 株式会社アスキーおよび株式会社アスキー・メディアワークスが
+% 配布していた\pLaTeXe{}（以下、「アスキー版\pLaTeXe{}」）とは
+% 異なりますので、注意してください。
+% \end{chuui}
+%\else
+% ^^A \begin{chuui}[]
+% ^^A This document provides a brief description of \pLaTeXe, the Japanese
+% ^^A extended version of \LaTeXe. Current maintainer of
+% ^^A \pLaTeXe\ is Japanese \TeX\ Development Community.
+% ^^A \end{chuui}
+%\fi
+%
+%\ifJAPANESE
+% 2010年以降、アスキー\pTeX\footnote{アスキー日本語\pTeX:
+% \texttt{https://asciidwango.github.io/ptex/}}は、
+% 国際的に広く使われている\TeX\ Liveというディストリビューションに
+% 取り込まれ、そこで独自の改良や仕様変更が加えられてきました。
+% 最近（2011年以降）の\TeX\ LiveやW32\TeX{}では、\pLaTeX{}も
+% 元々の\pTeX{}ではなく、その拡張版\epTeX{}をエンジンに用いるようになって
+% います。また、\pLaTeX{}のベースである\LaTeX{}も更新が進められています。
+%
+% こうした流れにあわせた新しい\pLaTeX{}として、アスキー版からforkして
+% 日本語\TeX{}開発コミュニティ (Japanese \TeX\ Development Community) が
+% 配布しているものが、コミュニティ版\pLaTeX{}です。開発中の版はGitHubの
+% リポジトリ\footnote{\texttt{https://github.com/texjporg/platex}}で
+% 管理しています。コミュニティ版\pLaTeX{}はアスキー版とは異なりますので、
+% バグレポートはアスキー宛てではなく、日本語\TeX{}開発コミュニティに報告
+% してください。\TeX\ ForumやGitHubのIssueシステムが利用できます。
+%
+% この文書(platex.pdf)はコミュニティ版\pLaTeX{}の概要を説明したものです
+% が、内容はアスキー版（1995年頃）からほとんど変わっていませんので、
+% 今では歴史的な文書ということにしておきます。
+% 最近の\pLaTeX{}の更新内容は\pLaTeX{}ニュース（アスキー版：plnews*.pdf、
+% コミュニティ版：plnewsc*.pdf）を参照してください。また、
+% 実際の\pLaTeX{}のソースコードはpldoc.pdfで説明しています。
+%\else
+% \def\JLaTeX{\leavevmode\lower.5ex\hbox{J}\kern-.15em\LaTeX}
+% \pLaTeX\ is a Japanese \LaTeX\ format, which is adjusted/extended
+% to be more suitable for writing Japanese documents.
+% It requires \pTeX\footnote{The \pTeX\ website:
+% \texttt{https://asciidwango.github.io/ptex/} (in Japanese)},
+% a \TeX\ engine with extensions for Japanese typesetting,
+% which is designed for high-quality
+% Japanese book ``p''ublishing.\footnote{There is another
+% old implementation of Japanese \LaTeX\ by
+% NTT Electrical Communications Laboratories, named
+% \JLaTeX\ (unavailable in \TeX\ Live).
+% Also, MiK\TeX\ has another program \texttt{platex} for Polish, but
+% it has nothing to do with our Japanese \pLaTeX!}
+% Both of them were developed by ASCII Corporation
+% (and its successor ASCII Media Works),
+% so they are often referred to as ``ASCII \pTeX'' and ``ASCII \pLaTeX''
+% respectively.
+%
+% In 2010, ASCII \pTeX\ was incorporated into the
+% world-wide \TeX\ distribution, \TeX\ Live. Since then, \pTeX\ has
+% been maintained/improved/changed along with \TeX\ Live sources.
+% In recent versions of \TeX\ Live and W32\TeX\ (around 2011),
+% the default engine of \pLaTeX\ changed from original \pTeX\ to
+% \epTeX\ (\pTeX\ with \eTeX\ extension).
+% Also, the original \LaTeX\ itself is also frequently updated.
+% On the other hand, \pLaTeX\ remained unchanged since 2006,
+% which resulted in some incompatibility and limitations.
+%
+% To follow these upstream changes, we (Japanese \TeX\ Development
+% Community\footnote{\texttt{https://texjp.org}}) decided to fork
+% ASCII \pLaTeX\ and distribute the ``community edition.''
+% The development version is available from
+% GitHub repository\footnote{\texttt{https://github.com/texjporg/platex}}.
+% The forked community edition is different from the original ASCII
+% edition, so any bug reports and requests should be sent to
+% Japanese \TeX\ Development Community, using GitHub Issue system.
+%
+% This document (platex-en.pdf) is a brief explanation of
+% the \pLaTeXe\ community edition. It is somewhat of a historical
+% document now, since \pLaTeXe\ came into existence in 1995
+% (although the English translation has been done by
+% Japanese \TeX\ Development Community since 2017).
+% ^^A The detail of source codes are described separately in pldoc-en.pdf.
+%\fi
+%
+%
+% \clearpage
+%
+%\ifJAPANESE
+% \section{この文書について}\label{platex:intro}
+% この文書は\pLaTeXe{}の概要を示していますが、使い方のガイドではありません。
+% \pLaTeXe{}の機能全般については、\cite{platex2e-book}を参照してください。
+% また、\cite{tate-book}で説明されていた縦組向けの拡張コマンドに
+% ついては、\file{pldoc.pdf}の中の\file{plext.dtx}の項目を参照してください。
+%
+% 日本語の組版処理については、
+% \pTeX{}（あるいはその前身の「日本語\TeX{}」）に関する文献
+% \cite{jtex-tech}や\cite{ajt2008okumura}（英語）, \cite{tb29hamano}（英語）も
+% 併せてご参照ください。
+%
+% \LaTeX{}の機能については、\cite{latex-book2}や\cite{latex-comp}などを
+% 参照してください。新しい機能については\file{usrguide.tex}を参照してください。
+% \pLaTeX{}のコマンド一覧は「\pLaTeXe{}チートシート」(platexsheet.pdf) または
+% その\textsf{jsclasses}版 (platexsheet-jsclasses.pdf) が参考に
+% なるでしょう\footnote{両者のPDFとも、コマンドラインで
+% \texttt{texdoc -l platexcheat}を実行すると表示されます。}。
+% \changes{v1.0}{1995/05/08}{最初のバージョン}
+% \changes{v1.0a}{1995/08/25}{互換性について、\dst{}の使い方、参考文献を追加}
+% \changes{v1.0r}{2017/12/02}{英語の参考文献も追加}
+% \changes{v1.0x}{2018/09/03}{platexcheatに言及}
+%\else
+% \section{Introduction to this document}\label{platex:intro}
+% This document briefly describes \pLaTeXe, but is not a manual of \pLaTeXe.
+% For the basic functions of \pLaTeXe, see \cite{platex2e-book} (in Japanese).
+% For extensions of some commands for vertical writing (which were first
+% described in \cite{tate-book} in Japanese), see \file{plext.dtx} section
+% in \file{pldoc-en.pdf}.
+%
+% For Japanese typesetting, please refer to the documentation of \pTeX\ (or
+% ``Japanese \TeX''; the preliminary version of \pTeX),
+% \cite{jtex-tech} (in Japanese), \cite{ajt2008okumura} (in English)
+% and \cite{tb29hamano} (in English).
+% \changes{v1.0}{1995/05/08}{first edition}
+% \changes{v1.0a}{1995/08/25}{Added 'Compatibility', `Usage of \dst{}'
+%    and `References'}
+% \changes{v1.0r}{2017/12/02}{English references added}
+% \changes{v1.0x}{2018/09/03}{Mention platexcheat (Japanese only).}
+%\fi
+%
+%\ifJAPANESE
+% この文書の構成は次のようになっています。
+%
+% \begin{quote}
+% \begin{description}
+% \item[第\ref{platex:intro}節]
+%  この節です。この文書についての概要を述べています。
+%
+% \item[第\ref{platex:plcore}節]
+%  \pLaTeXe{}で拡張した機能についての概要です。
+%  付属のクラスファイルやパッケージファイルについても簡単に
+%  説明しています。
+%
+% \item[第\ref{platex:compatibility}節]
+%  現在のバージョンの\pLaTeX{}と旧バージョン、あるいは元となっている
+% \LaTeX{}との互換性について述べています。
+%
+% \item[付録\ref{app:dst}]
+%  この文書ソース(platex.dtx)の
+%  \dst{}のためのオプションについて述べています。
+%
+% \item[付録\ref{app:pldoc}]
+%  \pLaTeXe{}のdtxファイルをまとめて、一つのソースコード説明書に
+%  するための文書ファイルの説明をしています。
+%
+% \item[付録\ref{app:omake}]
+%  付録\ref{app:pldoc}で説明した文書ファイルを処理するshスクリプト（手順）、
+%  \dst{}文書ファイル内の入れ子の対応を調べるperlスクリプトなどについて
+%  説明しています。
+% \end{description}
+% \end{quote}
+%\else
+% This document consists of following parts:
+%
+% \begin{quote}
+% \begin{description}
+% \item[Section \ref{platex:intro}]
+%  This section; describes this document itself.
+%
+% \item[Section \ref{platex:plcore}]
+%  Brief explanation of extensions in \pLaTeXe.
+%  Also describes the standard classes and packages.
+%
+% \item[Section \ref{platex:compatibility}]
+%  The compatibility note for users of the old version of
+%  \pLaTeXe\ or those of the original \LaTeXe.
+%
+% \item[Appendix \ref{app:dst}]
+%  Describes \dst\ Options for this document.
+%
+% \item[Appendix \ref{app:pldoc}]
+%  Description of `pldoc.tex' (counterpart for `source2e.tex' in \LaTeXe).
+%
+% \item[Appendix \ref{app:omake}]
+%  Description of a shell script to process `pldoc.tex', and
+%  a tiny perl program to check \dst\ guards, etc.
+% \end{description}
+% \end{quote}
+%\fi
+%
+%
+%\ifJAPANESE
+% \section{\pLaTeXe{}の機能について}\label{platex:plcore}
+% \pLaTeXe{}が提供するファイルは、次の3種類に分類することができます。
+%
+% \begin{itemize}
+% \item フォーマットファイル
+% \item クラスファイル
+% \item パッケージファイル
+% \end{itemize}
+%
+% フォーマットファイルには、基本的な機能が定義されており、
+% \pLaTeXe{}の核となるファイルです。
+% このファイルに定義されているマクロは、実行時の速度を高めるために、
+% あらかじめ\TeX{}の内部形式の形で保存されています。
+%
+% クラスファイルは文書のレイアウトを設定するファイル、
+% パッケージファイルはマクロの拡張を定義するファイルです。
+% 前者は|\documentclass|コマンドを用いて読み込み、
+% 後者は|\usepackage|コマンドを用いて読み込みます。
+%
+% \begin{chuui}[古い\pLaTeX~2.09ユーザへの注意：]\normalfont
+% クラスファイルとパッケージファイルは、従来、スタイルファイルと呼ばれていた
+% ものです。\LaTeXe{}ではそれらを、レイアウトに関するものをクラスファイルと
+% 呼び、マクロの拡張をするものをパッケージファイルと呼んで区別するように
+% なりました。
+% \end{chuui}
+%\else
+% \section{About Functions of \pLaTeXe}\label{platex:plcore}
+% The structure of \pLaTeXe\ is similar to that of \LaTeXe;
+% it consists of 3 types of files: a format (platex.ltx),
+% classes and packages.
+%\fi
+%
+%\ifJAPANESE
+% \subsection{フォーマットファイル}
+% \pLaTeX{}のフォーマットファイルを作成するには、
+% ソースファイル``platex.ltx''を\epTeX{}のINIモードで処理します
+% \footnote{2016年以前は\pTeX{}と\epTeX{}のどちらでもフォーマットを作成する
+% ことができましたが、2017年に\LaTeX{}が\eTeX{}必須となったことに伴い、
+% \pLaTeX{}も\epTeX{}が必須となりました。}。
+% ただし、\TeX\ LiveやW32\TeX{}ではこの処理を簡単にする|fmtutil-sys|あるいは
+% |fmtutil|というプログラムが用意されています。
+% 以下を実行すれば、フォーマットファイル\file{platex.fmt}が作成されます。
+%\else
+% \subsection{About the Format}
+% To make a format for \pLaTeX,
+% process ``platex.ltx'' with INI mode of \epTeX.\footnote{Formerly
+% both \pTeX\ and \epTeX\ can make the format file for \pLaTeX, however,
+% it's not true anymore because \LaTeX\ requires \eTeX\ since 2017.}
+% A handy command `fmtutil-sys' (or `fmtutil') for this purpose
+% is available in \TeX\ Live. The following command generates \file{platex.fmt}.
+%\fi
+%\begin{verbatim}
+%   fmtutil-sys --byfmt platex
+%\end{verbatim}
+%
+%\ifJAPANESE
+% 次のリストが、\file{platex.ltx}の内容です。
+% ただし、このバージョンでは、\LaTeX{}から\pLaTeX{}への拡張を
+% \file{plcore.ltx}をロードすることで行ない、
+% \file{latex.ltx}には直接、手を加えないようにしています。
+% したがって\file{platex.ltx}はとても短いものとなっています。
+% \file{latex.ltx}には\LaTeX{}のコマンドが、
+% \file{plcore.ltx}には\pLaTeX{}で拡張したコマンドが定義されています。
+%\else
+% The content of \file{platex.ltx} is shown below.
+% In the current version of \pLaTeX,
+% first we simply load \file{latex.ltx} and
+% modify/extend some definitions by loading \file{plcore.ltx}.
+%\fi
+%    \begin{macrocode}
+%<*plcore>
+%    \end{macrocode}
+%
+%\ifJAPANESE
+% \file{latex.ltx}の末尾で使われている|\dump|をいったん無効化します。
+%\else
+% Temporarily disable |\dump| at the end of \file{latex.ltx}.
+%\fi
+%    \begin{macrocode}
+\let\orgdump\dump
+\let\dump\relax
+%    \end{macrocode}
+%
+%\ifJAPANESE
+% \file{latex.ltx}を読み込みます。
+% \TeX\ Liveの標準的インストールでは、この中でBabel由来の
+% ハイフネーション・パターン\file{hyphen.cfg}が読み込まれるはずです。
+% \changes{v1.0g}{2016/05/07}{フォーマット作成時に\LaTeX{}のバナーを一旦保存}
+% \changes{v1.0n}{2016/09/14}{\LaTeX{}のバナーの保存しかたを改良}
+% \changes{v1.0p}{2017/11/11}{\LaTeX{}のバナーを保存するコードを
+%    \file{platex.ltx}から\file{plcore.ltx}へ移動}
+%\else
+% Load \file{latex.ltx} here.
+% Within the standard installation of \TeX\ Live, \file{hyphen.cfg}
+% provided by ``Babel'' package will be used.
+% \changes{v1.0g}{2016/05/07}{Save \LaTeX\ banner}
+% \changes{v1.0n}{2016/09/14}{Improved banner saving method}
+% \changes{v1.0p}{2017/11/11}{Moved banner saving code from
+%    \file{platex.ltx} to \file{plcore.ltx}}
+%\fi
+%    \begin{macrocode}
+\input latex.ltx
+%    \end{macrocode}
+%
+%\ifJAPANESE
+% この時点で|\typeout|が未定義なら、\LaTeX{}カーネルの読み込みに
+% 失敗していますので、強制終了します（\LaTeXe\ 2017/01/01以降を
+% 非\eTeX{}拡張でフォーマット作成しようとした場合など）。
+% \changes{v1.1c}{2021/02/25}{\file{latex.ltx}の読込チェック}
+%\else
+% If |\typeout| is still undefined, the input of \LaTeX~kernel
+% should have failed; abort now.
+% \changes{v1.1c}{2021/02/25}{Check for \file{latex.ltx} status}
+%\fi
+%    \begin{macrocode}
+\ifx\typeout\undefined
+  \errhelp{Please reinstall LaTeX, or check e-TeX availability.}%
+  \errmessage{Failed to load `latex.ltx' properly}%
+  \expandafter\end
+\fi
+%    \end{macrocode}
+%
+%\ifJAPANESE
+% \file{plcore.ltx}を読み込みます。
+%\else
+% Load \file{plcore.ltx}.
+%\fi
+%    \begin{macrocode}
+\typeout{**************************^^J%
+         *^^J%
+         * making pLaTeX format^^J%
+         *^^J%
+         **************************}
+\makeatletter
+\input plcore.ltx
+%    \end{macrocode}
+%
+%\ifJAPANESE
+% フォント関連のデフォルト設定ファイルである、
+% \file{pldefs.ltx}を読み込みます。
+% \TeX{}の入力ファイル検索パスに設定されている
+% ディレクトリに\file{pldefs.cfg}ファイルがある場合は、
+% そのファイルを使います。
+% 読み込み後にコードが実行されるかもしれません。
+% \changes{v1.0s}{2017/12/05}{デフォルト設定ファイルの読み込みを
+%    \file{plcore.ltx}から\file{platex.ltx}へ移動}
+% \changes{v1.1b}{2020/09/28}{defs読込後にフック追加}
+%\else
+% Load font-related default settings, \file{pldefs.ltx}.
+% If a file \file{pldefs.cfg} is found, then that file will be
+% used instead.
+% Some code may be executed after loading.
+% \changes{v1.0s}{2017/12/05}{Moved loading default settings
+%    from \file{plcore.ltx} to \file{platex.ltx}}
+% \changes{v1.1b}{2020/09/28}{Add hook after loading defs}
+%\fi
+%    \begin{macrocode}
+\InputIfFileExists{pldefs.cfg}
+           {\typeout{*************************************^^J%
+                     * Local config file pldefs.cfg used^^J%
+                     *************************************}}%
+           {\input{pldefs.ltx}}
+\ifx\code@after@pldefs\@undefined\else \code@after@pldefs \fi
+%    \end{macrocode}
+%
+%\ifJAPANESE
+% 以前のバージョンでは、フォーマット作成時に\pLaTeX{}のバージョンが
+% わかるように、端末に表示していましたが、|\everyjob| にバナー表示
+% 以外のコードが含まれる可能性を考慮し、安全のためやめました。
+% \changes{v1.0w}{2018/04/08}{安全のためフォーマット作成時の
+%    バナー表示をやめた}
+%\else
+% In the previous version, we displayed \pLaTeX\ version
+% on the terminal, so that it can be easily recognized
+% during format creation; however |\everyjob| can contain
+% any code other than showing a banner, so now disabled.
+% \changes{v1.0w}{2018/04/08}{Stop showing banner during
+%    format generation for safety}
+%\fi
+%    \begin{macrocode}
+%\the\everyjob
+%    \end{macrocode}
+%
+%\ifJAPANESE
+% \pLaTeXe{}の起動時に\file{platex.cfg}がある場合、それを読み込む
+% ようにします。
+% バージョン2016/07/01ではコードを\file{plcore.ltx}に入れていました
+% が、\file{platex.ltx}へ移動しました。
+% \changes{v1.0m}{2016/08/26}{\file{platex.cfg}の読み込みを
+%    \file{plcore.ltx}から\file{platex.ltx}へ移動}
+%\else
+% Load \file{platex.cfg} if it exists at runtime.
+% \changes{v1.0m}{2016/08/26}{Moved loading \file{platex.cfg}
+%    from \file{plcore.ltx} to \file{platex.ltx}}
+%\fi
+%    \begin{macrocode}
+\everyjob\expandafter{%
+  \the\everyjob
+  \IfFileExists{platex.cfg}{%
+    \typeout{*************************^^J%
+             * Loading platex.cfg.^^J%
+             *************************}%
+    \input{platex.cfg}}{}%
+}
+%    \end{macrocode}
+%
+%\ifJAPANESE
+% フォーマットファイルにダンプします。
+% \changes{v1.0i}{2016/05/12}{一時コマンド\cs{orgdump}を最終的に未定義へ}
+%\else
+% Dump to the format file.
+% \changes{v1.0i}{2016/05/12}{Undefine temporary command
+%    \cs{orgdump} in the end.}
+%\fi
+%    \begin{macrocode}
+\let\dump\orgdump
+\let\orgdump\@undefined
+\makeatother
+\dump
+%\endinput
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</plcore>
+%    \end{macrocode}
+%
+%\ifJAPANESE
+% 実際に\pLaTeXe{}への拡張を行なっている\file{plcore.ltx}は、
+% \dst{}プログラムによって、次のファイルの断片が連結されたものです。
+%
+% \begin{itemize}
+% \item \file{plvers.dtx}は、\pLaTeXe{}のフォーマットバージョンを
+%   定義しています。
+% \item \file{plfonts.dtx}は、\NFSS2を拡張しています。
+% \item \file{plcore.dtx}は、上記以外のコマンドでフォーマットファイルに
+%   格納されるコマンドを定義しています。
+% \end{itemize}
+%
+% また、プリロードフォントや組版パラメータなどのデフォルト設定は、
+% \file{platex.ltx}の中で\file{pldefs.ltx}をロードすることにより行います
+% \footnote{アスキー版では\file{plcore.ltx}の中でロードしていましたが、
+% 2018年以降の新しいコミュニティ版\pLaTeX{}では
+% \file{platex.ltx}から読み込むことにしました。}。
+% このファイル\file{pldefs.ltx}も\file{plfonts.dtx}から生成されます。
+% \begin{chuui}
+% このファイルに記述されている設定を変更すれば
+% \pLaTeXe{}をカスタマイズすることができますが、
+% その場合は\file{pldefs.ltx}を直接修正するのではなく、いったん
+% \file{pldefs.cfg}という名前でコピーして、そのファイルを編集してください。
+% フォーマット作成時に\file{pldefs.cfg}が存在した場合は、そちらが
+% \file{pldefs.ltx}の代わりに読み込まれます。
+% \end{chuui}
+%\else
+% The file \file{plcore.ltx}, which provides modifications/extensions
+% to make \pLaTeXe, is a concatenation of stripped files below
+% using \dst\ program.
+%
+% \begin{itemize}
+% \item \file{plvers.dtx} defines the format version of \pLaTeXe.
+% \item \file{plfonts.dtx} extends \NFSS2 for Japanese font selection.
+% \item \file{plcore.dtx} defines other modifications to \LaTeXe.
+% \end{itemize}
+%
+% Moreover, default settings of pre-loaded fonts and typesetting parameters
+% are done by loading \file{pldefs.ltx} inside
+% \file{platex.ltx}.\footnote{ASCII \pLaTeX\ loaded \file{pldefs.ltx}
+% inside \file{plcore.ltx}; however, \pLaTeX\ community edition newer than
+% 2018 loads \file{pldefs.ltx} inside \file{platex.ltx}.}
+% This file \file{pldefs.ltx} is also stripped from \file{plfonts.dtx}.
+% \begin{chuui}
+% You can customize \pLaTeXe\ by tuning these settings.
+% If you need to do that, copy/rename it as \file{pldefs.cfg} and edit it,
+% instead of overwriting \file{pldefs.ltx} itself.
+% If a file named \file{pldefs.cfg} is found at a format creation
+% time, it will be read as a substitute of \file{pldefs.ltx}.
+% \end{chuui}
+%\fi
+%
+%
+%\ifJAPANESE
+% \subsubsection{バージョン}
+% \pLaTeXe{}のバージョンやフォーマットファイル名は、
+% \file{plvers.dtx}で定義しています。
+%\else
+% \subsubsection{Version}
+% The version (like ``\pfmtversion'') and the format name
+% (``\pfmtname'') of \pLaTeXe\ are defined in \file{plvers.dtx}.
+%\fi
+%
+%
+%\ifJAPANESE
+% \subsubsection{\NFSS2コマンド}
+% \LaTeXe{}では、フォント選択機構として\NFSS2を用いています。
+% \pLaTeXe{}では、オリジナルの\NFSS2と同様のインターフェイスで、
+% 和文フォントを選択できるように、\file{plfonts.dtx}で\NFSS2を拡張しています。
+%
+% \pLaTeXe{}の\NFSS2は、フォントを切替えるコマンドを指定するときに、
+% それが欧文書体か和文書体のいずれかを対象とするものかを、
+% できるだけ意識しないようにする方向で拡張しています。
+% いいかえれば、コマンドが（可能な限りの）判断をします。
+% したがって数多くある英語版のクラスファイルやパッケージファイルなどで
+% 書体の変更を行っている箇所を修正する必要はあまりありません。
+%
+% \NFSS2についての詳細は、\LaTeXe{}に付属の\file{fntguide.tex}を参照して
+% ください。
+%\else
+% \subsubsection{\NFSS2 Commands}
+% \LaTeXe\ uses \NFSS2 as a font selection scheme, however, it
+% supports only alphabetic fonts.
+% \pLaTeXe\ extends \NFSS2 to enable selection of Japanese fonts in
+% a consistent manner with the original \NFSS2.
+%
+% Most of the interface commands are defined to be clever enough,
+% so that it can automatically judge whether it is going to
+% change alphpabetic fonts or Japanese fonts.
+% It works almost fine with most of the widely used classes and
+% packages, without any modification.
+%
+% For the defail of (the original) \NFSS2, please refer to
+% \file{fntguide.tex} in \LaTeXe.
+%\fi
+%
+%
+%\ifJAPANESE
+% \subsubsection{出力ルーチンとフロート}
+% \file{plcore.dtx}は、次の項目に関するコマンドを日本語処理用に修正や拡張
+% をしています。
+%
+% \begin{itemize}
+% \item プリアンブルコマンド
+% \item 改ページ
+% \item 改行
+% \item オブジェクトの出力順序
+% \item トンボ
+% \item 脚注マクロ
+% \item 相互参照
+% \item 疑似タイプ入力
+% \end{itemize}
+%\else
+% \subsubsection{Output Routine and Floats}
+% \file{plcore.dtx} modifies and extends some \LaTeXe\ commands
+% for Japanese processing.
+%
+% \begin{itemize}
+% \item Preamble commands
+% \item Page breaking
+% \item Line breaking
+% \item The order of float objects
+% \item Crop marks (``tombow'')
+% \item Footnote macros
+% \item Cross-referencing
+% \item Verbatim
+% \end{itemize}
+%\fi
+%
+%
+%\ifJAPANESE
+% \subsection{クラスファイルとパッケージファイル}
+%
+% \pLaTeXe{}が提供をするクラスファイルやパッケージファイルは、
+% オリジナルのファイルを基にしています。
+%
+% \pLaTeXe{}に付属のクラスファイルは、次のとおりです。
+%
+% \begin{itemize}
+% \item jarticle.cls, jbook.cls, jreport.cls\par
+%   横組用の標準クラスファイル。
+%   \file{jclasses.dtx}から作成される。
+%
+% \item tarticle.cls, tbook.cls, treport.cls\par
+%   縦組用の標準クラスファイル。
+%   \file{jclasses.dtx}から作成される。
+%
+% \item jltxdoc.cls\par
+%   日本語の\file{.dtx}ファイルを組版するためのクラスファイル。
+%   \file{jltxdoc.dtx}から作成される。
+% \end{itemize}
+%\else
+% \subsection{Classes and Packages}
+%
+% Classes and packages bundled with \pLaTeXe\ are based on
+% those in original \LaTeXe, with some Japanese localization.
+%
+% \pLaTeXe\ classes:
+%
+% \begin{itemize}
+% \item jarticle.cls, jbook.cls, jreport.cls\par
+%   Standard \emph{yoko-kumi} (horizontal writing) classes;
+%   stripped from \file{jclasses.dtx}.
+%
+% \item tarticle.cls, tbook.cls, treport.cls\par
+%   Standard \emph{tate-kumi} (vertical writing) classes;
+%   stripped from \file{jclasses.dtx}.
+%
+% \item jltxdoc.cls\par
+%   Class for typesetting Japanese \file{.dtx} file;
+%   stripped from \file{jltxdoc.dtx}.
+% \end{itemize}
+%\fi
+%
+%\ifJAPANESE
+% また、\pLaTeXe{}に付属のパッケージファイルは、次のとおりです。
+% \changes{v1.0d}{2016/01/27}{\pLaTeXe{}に付属するファイルの説明を更新}
+% \changes{v1.0j}{2016/05/20}{pfltraceの説明を追加}
+%
+% \begin{itemize}
+% \item plext.sty\par
+%   縦組用の拡張コマンドなどが定義されているファイル。
+%   \file{plext.dtx}から作成される。
+%
+% \item ptrace.sty\par
+%   \LaTeX{}でフォント選択コマンドのトレースに使う\file{tracefnt.sty}が
+%   再定義してしまう\NFSS2コマンドを、\pLaTeXe{}用に再々定義するための
+%   パッケージ。
+%   \file{plfonts.dtx}から作成される。
+%
+% \item pfltrace.sty\par
+%   \LaTeX{}でフロート関連コマンドのトレースに使う\file{fltrace.sty}%
+%   \footnote{\LaTeXe\ 2014/05/01で追加されました。参考：
+%   \LaTeXe\ News Issue 21 (ltnews21.tex)}が再定義してしまうコマンド
+%   を、\pLaTeXe{}用に再々定義するためのパッケージ。
+%   \file{plcore.dtx}から作成される。
+%
+% \item oldpfont.sty\par
+%   \pLaTeX~2.09のフォントコマンドを提供するパッケージ。
+%   \file{pl209.dtx}から作成される。
+% \end{itemize}
+%
+% なお、以前のバージョンに同梱していたascmacパッケージと
+% nidanfloatパッケージは、別のバンドルとして独立させました。
+% \changes{v1.0t}{2018/02/07}{ascmacパッケージを独立させた}
+% \changes{v1.0u}{2018/02/18}{nidanfloatパッケージを独立させた}
+%\else
+% \pLaTeXe\ packages:
+% \changes{v1.0d}{2016/01/27}{Updated descriptions of \pLaTeXe\ files}
+% \changes{v1.0j}{2016/05/20}{Add description of `pfltrace'}
+%
+% \begin{itemize}
+% \item plext.sty\par
+%   Useful macros and extensions for vertical writing;
+%   stripped from \file{plext.dtx}.
+%
+% \item ptrace.sty\par
+%   \pLaTeXe\ version of \file{tracefnt.sty};
+%   the package \file{tracefnt.sty} overwrites \pLaTeXe-style \NFSS2
+%   commands, so \file{ptrace.sty} provides redefinitions to recover
+%   \pLaTeXe\ extensions.
+%   Stripped from \file{plfonts.dtx}.
+%
+% \item pfltrace.sty\par
+%   \pLaTeXe\ version of \file{fltrace.sty} (introduced in
+%   \LaTeXe\ 2014/05/01);
+%   stripped from \file{plcore.dtx}.
+%
+% \item oldpfont.sty\par
+%   Provides \pLaTeX~2.09 font commands;
+%   stripped from \file{pl209.dtx}.
+% \end{itemize}
+%
+% The packages ``ascmac.sty'' and ``nidanfloat.sty'',
+% which had been included in previous versions of \pLaTeX,
+% is now distributed as a separate bundle.
+% \changes{v1.0t}{2018/02/07}{Moved ascmac package to separate bundle}
+% \changes{v1.0u}{2018/02/18}{Moved nidanfloat package to separate bundle}
+%\fi
+%
+%
+%\ifJAPANESE
+% \section{他のフォーマット・旧バージョンとの互換性}
+% \label{platex:compatibility}
+% ここでは、この\pLaTeXe{}のバージョンと以前のバージョン、あるいは
+% \LaTeXe{}との互換性について説明をしています。
+%
+% \subsection{\LaTeXe{}との互換性}
+% \pLaTeXe{}は、\LaTeXe{}の上位互換という形を取っていますが、
+% いくつかの命令の定義やパラメータなども変更しています。
+% したがって英文書など、\LaTeXe{}でも処理できるファイルを
+% \pLaTeXe{}で処理しても、完全に同じ結果になるとは限りません。
+%
+% \LaTeXe{}向けに書かれた多くのクラスファイルやパッケージファイルは、
+% そのまま使えると思います。
+% ただし、それらが\pLaTeXe{}で拡張しているコマンドと同じ名前の
+% コマンドを再定義している場合は、
+% その拡張の仕方によってはエラーになることもあります。
+% 用いようとしているクラスファイルやパッケージファイルが
+% うまく動くかどうかを、完全に確かめる方法は残念ながらありません。
+% 一番簡単なのは、動かしてみることです。不幸にもうまく動かない場合は、
+% ログファイルや付属の文書ファイルを参考に原因を調べてください。
+%
+% なお、いくつかの\LaTeX{}パッケージについては、\pLaTeX{}向けの
+% パッチが用意されています。その一覧は、
+% \texttt{plautopatch}パッケージ（Hironobu Yamashita作）の
+% ドキュメント（日本語版はplautopatch-ja.pdf）に記載されています。
+% \changes{v1.0x}{2018/09/03}{plautopatchに言及}
+%\else
+% \section{Compatibility with Other Formats and Older Versions}
+% \label{platex:compatibility}
+% Here we provide some information about the compatibility between
+% current \pLaTeXe\ and older versions or original \LaTeXe.
+%
+% \subsection{Compatibility with \LaTeXe}
+% \pLaTeXe\ is in most part upward compatible with \LaTeXe,
+% but some parameters are adjusted to be suitable for Japanese.
+% Therefore, you should not expect identical output, even though
+% the same source can be processed on both \LaTeXe\ and \pLaTeXe.
+%
+% We hope that most classes and packages meant for \LaTeXe\ works
+% also for \pLaTeXe\ without any modification. However for example,
+% if a class or a package redefines a command which is already
+% modified by \pLaTeXe, it might cause an error at the worst case.
+% We cannot tell whether a class or a package works fine with
+% \pLaTeXe\ beforehand; the easiest way is to try to use it.
+% If it fails, please refer to the log file or a package manual.
+%
+% Some \LaTeX\ packages are known to be incompatible with \pLaTeX.
+% For those packages, \pLaTeX-specific patches might be available.
+% Please refer to the documentation of the \texttt{plautopatch}
+% package (by Hironobu Yamashita).
+% \changes{v1.0x}{2018/09/03}{Mention plautopatch.}
+%\fi
+%
+%\ifJAPANESE
+% \subsection{\pLaTeX~2.09との互換性}
+% \pLaTeXe{}では、文書が使用するクラスを、
+% プリアンブルで|\documentclass|コマンドにより指定します。
+% ここで|\documentclass|の代わりに|\documentstyle|を
+% 用いると、\pLaTeXe{}は自動的に\emph{2.09互換モード}に入ります。
+% これは\LaTeXe{}が\LaTeX~2.09互換モードに入るのと同様で、
+% 互換モードは古い文書を組版するためだけに作られています。
+% 新しく文書を作成する場合は、|\documentclass|コマンドを用いてください。
+%
+% 互換モードでは(p)\LaTeXe{}の新しい機能を利用できず、
+% また古いネイティブな\pLaTeX~2.09環境と微妙に異なる結果になる
+% 可能性もあるという点は、英語版の\LaTeXe{}でも同じです。
+% 詳細は、\LaTeXe に付属の\file{usrguide.tex}を参照してください。
+%\else
+% \subsection{Compatibility with \pLaTeX~2.09}
+% \pLaTeXe\ has `\pLaTeX~2.09 compatibility mode'; use
+% |\documentstyle| to enter it, but the support might be limited.
+% Note that the 2.09 compatibility mode is provided solely to
+% allow you to process very old documents,
+% which were written for a very old system.
+%\fi
+%
+%
+%\ifJAPANESE
+% \subsection{latexreleaseパッケージへの対応}
+% \changes{v1.0e}{2016/02/16}{platexreleaseの説明を追加}
+% \LaTeX\ \texttt{<2015/01/01>}で導入されたlatexreleaseパッケージを
+% もとに、新しい\pLaTeX{}ではplatexreleaseパッケージを用意しました。
+% platexreleaseパッケージを用いると、過去の\pLaTeX{}をエミュレート
+% したり、フォーマットを作り直すことなく新しい\pLaTeX{}を試したりする
+% ことができます。詳細はplatexreleaseのドキュメントを参照してください。
+%\else
+% \subsection{Support for Package `latexrelease'}
+% \changes{v1.0e}{2016/02/16}{Add a description of platexrelease}
+% \pLaTeX\ provides `platexrelease' package, which is based on
+% `latexrelease' package (introduced in \LaTeX\ \texttt{<2015/01/01>}).
+% It may be used to ensure stability where needed, by emulating
+% the specified format date without regenerating the format file.
+% For more detail, please refer to its documentation.
+%\fi
+%
+%
+%
+% \appendix
+%
+%\ifJAPANESE
+% \section{\dst{}プログラムのためのオプション}\label{app:dst}
+% この文書のソース(\file{platex.dtx})を\dst{}プログラムで
+% 処理することによって、
+% いくつかの異なるファイルを生成することができます。
+% \dst{}プログラムの詳細は、\file{docstrip.dtx}を参照してください。
+%
+% この文書の\dst{}プログラムのためのオプションは、次のとおりです。
+%
+% \DeleteShortVerb{\|}
+% \begin{center}
+% \begin{tabular}{l|p{.8\linewidth}}
+% \emph{オプション} & \emph{意味}\\\hline
+% plcore & フォーマットファイルを作るためのファイルを生成\\
+% pldoc  & \pLaTeXe{}のソースファイルをまとめて組版するための
+%          文書ファイル(pldoc.tex)を生成\\[2mm]
+% shprog & 上記のファイルを作成するためのshスクリプトを生成\\
+% plprog & 入れ子構造を調べる簡単なperlスクリプトを生成\\
+% Xins   & 上記のshスクリプトやperlスクリプトを取り出すための
+%          \dst{}バッチファイル(Xins.ins)を生成\\
+% \end{tabular}
+% \end{center}
+% \MakeShortVerb{\|}
+%\else
+% \section{\dst\ Options}\label{app:dst}
+% By processing \file{platex.dtx} with \dst\ program,
+% different files can be generated.
+% Here are the \dst\ options for this document:
+%
+% \DeleteShortVerb{\|}
+% \begin{center}
+% \begin{tabular}{l|p{.8\linewidth}}
+% \emph{Option} & \emph{Function}\\\hline
+% plcore & Generates a fragment of format sources\\
+% pldoc  & Generates `pldoc.tex' for typesetting
+%          \pLaTeXe\ sources\\[2mm]
+% shprog & Generates a shell script to process `pldoc.tex'\\
+% plprog & Generates a tiny perl program to check
+%          \dst\ guards nesting\\
+% Xins   & Generates a \dst\ batch file `Xins.ins' for
+%          generating the above shell/perl scripts\\
+% \end{tabular}
+% \end{center}
+% \MakeShortVerb{\|}
+%\fi
+%
+%\ifJAPANESE
+% \subsection{ファイルの取り出し方}
+%
+% たとえば、この文書の``plcore''の部分を``\file{platex.ltx}''という
+% ファイルにするときの手順はつぎのようになります。
+%
+% \begin{enumerate}
+% \item platex docstrip
+% \item 入力ファイルの拡張子（dtx）を入力する。
+% \item 出力ファイルの拡張子（ltx）を入力する。
+% \item \dst{}オプション（plcore）を入力する。
+% \item 入力ファイル名（platex）を入力する。
+% \item \file{platex.ltx}が存在する場合は、確認を求めてくるので、
+%  ``y''を入力する。
+% \item 別の処理を行なうかを問われるので、``n''を入力する。
+% \end{enumerate}
+% これで、\file{platex.ltx}が作られます。
+%
+% あるいは、次のような内容のファイル\file{fmt.ins}を作成し、
+% |platex fmt.ins|することでも\file{platex.ltx}を作ることができます。
+%
+%\begin{verbatim}
+%   \def\batchfile{fmt.ins}
+%   \input docstrip.tex
+%   \generateFile{platex.ltx}{t}{\from{platex.dtx}{plcore}}
+%\end{verbatim}
+%\else
+% ^^A (- English version omitted, not so useful -)
+%\fi
+%
+%
+%\ifJAPANESE
+% \section{文書ファイル}\label{app:pldoc}
+% \changes{v1.0c}{1997/01/25}{pldoc.dicをfilecontents環境により作成}
+% ここでは、このパッケージに含まれているdtxファイルをまとめて組版し、
+% ソースコード説明書を得るための文書ファイル\file{pldoc.tex}について
+% 説明をしています。個別に処理した場合と異なり、
+% 変更履歴や索引も付きます。全体で、およそ200ページ程度になります。
+%
+% デフォルトではソースコードの説明が日本語で書かれます。
+% もし英語の説明書を読みたい場合は、\par\medskip
+% \begin{minipage}{.5\textwidth}\ttfamily
+% | |\cs{newif}\cs{ifJAPANESE}
+% \end{minipage}\par\medskip\noindent
+% という内容の\file{platex.cfg}を予め用意してから\file{pldoc.tex}を
+% 処理してください（2016年7月1日以降のコミュニティ版\pLaTeXe{}が必要）。
+%\else
+% \section{Documentation of \pLaTeXe\ sources}\label{app:pldoc}
+% \changes{v1.0c}{1997/01/25}{Add to filecontents environment for pldoc.dic.}
+% The contents of `pldoc.tex' for typesetting \pLaTeXe\ sources
+% is described here. Compared to individual processings,
+% batch processing using `pldoc.tex' prints also changes and an index.
+% The whole document will have about 200 pages.
+%
+% By default, the description of \pLaTeXe\ sources is written in
+% Japanese. If you need English version, first save\par\medskip
+% \begin{minipage}{.5\textwidth}\ttfamily
+% | |\cs{newif}\cs{ifJAPANESE}
+% \end{minipage}\par\medskip\noindent
+% as \file{platex.cfg}, and process \file{pldoc.tex}
+% (\pLaTeXe\ Community Edition newer than July 2016 is required).
+%\fi
+%
+%\ifJAPANESE
+% |filecontents|環境は、引数に指定されたファイルが存在するときは何も
+% しませんが、存在しないときは、環境内の内容でファイルを作成します。
+% \file{pldoc.dic}ファイルは、mendexプログラムで索引を処理するときに
+% \cs{西暦}, \cs{和暦}に対する「読み」を付けるために必要です。
+%\else
+% First, create \file{pldoc.dic}; it serves as a dictionary
+% for `mendex' (Japanese index processor\footnote{Developed by
+% ASCII Corporation; the program `makeindex' cannot handle
+% Japanese characters properly, especially Kanji characters
+% which should be sorted by its readings.}), which is necessary
+% for indexing control sequences containing Japanese characters
+% (\cs{西暦} and \cs{和暦}).
+%\fi
+%    \begin{macrocode}
+%<*pldoc>
+\begin{filecontents}{pldoc.dic}
+西暦    せいれき
+和暦    われき
+\end{filecontents}
+%    \end{macrocode}
+%
+%\ifJAPANESE
+% 文書クラスには、\file{jltxdoc}クラスを用います。
+% \file{plext.dtx}の中でサンプルを組み立てていますので、
+% \file{plext}パッケージが必要です。
+%\else
+% We use \file{jltxdoc} class; we also require \file{plext} package,
+% since \file{plext.dtx} contains several examples of partial
+% vertical writing.
+%\fi
+%    \begin{macrocode}
+\documentclass{jltxdoc}
+\usepackage{plext}
+\listfiles
+
+%    \end{macrocode}
+%\ifJAPANESE
+% いくつかの\TeX{}プリミティブとplain \TeX{}コマンドを
+% 索引に出力しないようにします。
+%\else
+% Do not index some \TeX\ primitives, and some common
+% plain \TeX\ commands.
+%\fi
+%    \begin{macrocode}
+\DoNotIndex{\def,\long,\edef,\xdef,\gdef,\let,\global}
+\DoNotIndex{\if,\ifnum,\ifdim,\ifcat,\ifmmode,\ifvmode,\ifhmode,%
+            \iftrue,\iffalse,\ifvoid,\ifx,\ifeof,\ifcase,\else,\or,\fi}
+\DoNotIndex{\box,\copy,\setbox,\unvbox,\unhbox,\hbox,%
+            \vbox,\vtop,\vcenter}
+\DoNotIndex{\@empty,\immediate,\write}
+\DoNotIndex{\egroup,\bgroup,\expandafter,\begingroup,\endgroup}
+\DoNotIndex{\divide,\advance,\multiply,\count,\dimen}
+\DoNotIndex{\relax,\space,\string}
+\DoNotIndex{\csname,\endcsname,\@spaces,\openin,\openout,%
+            \closein,\closeout}
+\DoNotIndex{\catcode,\endinput}
+\DoNotIndex{\jobname,\message,\read,\the,\m@ne,\noexpand}
+\DoNotIndex{\hsize,\vsize,\hskip,\vskip,\kern,\hfil,\hfill,\hss,\vss,\unskip}
+\DoNotIndex{\m@ne,\z@,\z@skip,\@ne,\tw@,\p@,\@minus,\@plus}
+\DoNotIndex{\dp,\wd,\ht,\setlength,\addtolength}
+\DoNotIndex{\newcommand, \renewcommand}
+
+%    \end{macrocode}
+%\ifJAPANESE
+% 索引と変更履歴の見出しに|\part|を用いるように設定をします。
+%\else
+% Set up the Index and Change History to use |\part|.
+%\fi
+%    \begin{macrocode}
+\ifJAPANESE
+\IndexPrologue{\part*{索 引}%
+                 \markboth{索 引}{索 引}%
+                 \addcontentsline{toc}{part}{索 引}%
+イタリック体の数字は、その項目が説明されているページを示しています。
+下線の引かれた数字は、定義されているページを示しています。
+その他の数字は、その項目が使われているページを示しています。}
+\else
+\IndexPrologue{\part*{Index}%
+                 \markboth{Index}{Index}%
+                 \addcontentsline{toc}{part}{Index}%
+The italic numbers denote the pages where the corresponding entry
+is described, numbers underlined point to the definition,
+all others indicate the places where it is used.}
+\fi
+%
+\ifJAPANESE
+\GlossaryPrologue{\part*{変更履歴}%
+                 \markboth{変更履歴}{変更履歴}%
+                 \addcontentsline{toc}{part}{変更履歴}}
+\else
+\GlossaryPrologue{\part*{Change History}%
+                 \markboth{Change History}{Change History}%
+                 \addcontentsline{toc}{part}{Change History}}
+\fi
+
+%    \end{macrocode}
+%\ifJAPANESE
+% 標準の|\changes|コマンドを、複数ファイルの文書に合うように修正しています。
+%\else
+% Modify the standard |\changes| command slightly, to better cope with
+% this multiple file document.
+%\fi
+%    \begin{macrocode}
+\makeatletter
+\def\changes@#1#2#3{%
+  \let\protect\@unexpandable@protect
+  \edef\@tempa{\noexpand\glossary{#2\space
+               \currentfile\space#1\levelchar
+               \ifx\saved@macroname\@empty
+                  \space\actualchar\generalname
+               \else
+                  \expandafter\@gobble
+                  \saved@macroname\actualchar
+                  \string\verb\quotechar*%
+                  \verbatimchar\saved@macroname
+                  \verbatimchar
+               \fi
+               :\levelchar #3}}%
+  \@tempa\endgroup\@esphack}
+%    \end{macrocode}
+%\ifJAPANESE
+% コード行では、少しのOverfullを警告無しに許容します。
+% \changes{v1.0v}{2018/04/06}{最新のsource2eへの追随}
+%\else
+% Codelines are allowed to run over a bit without
+% showing up as overfull.
+% \changes{v1.0v}{2018/04/06}{Sync with the latest \file{source2e.tex}}
+%\fi
+%    \begin{macrocode}
+\renewcommand*\MacroFont{\fontencoding\encodingdefault
+                   \fontfamily\ttdefault
+                   \fontseries\mddefault
+                   \fontshape\updefault
+                   \small
+                   \hfuzz 6pt\relax}
+%    \end{macrocode}
+%\ifJAPANESE
+% 章番号の桁数が多い場合を考慮し、目次でのスペースを少し増やします。
+%\else
+% Section numbers now reach eg 19.12 which need more space.
+%\fi
+%    \begin{macrocode}
+\renewcommand*\l@subsection{\@dottedtocline{2}{1.5em}{2.8em}}
+\renewcommand*\l@subsubsection{\@dottedtocline{3}{3.8em}{3.4em}}
+\makeatother
+%    \end{macrocode}
+%\ifJAPANESE
+% 変更履歴と2段組の索引を作成します。
+%\else
+% Produce a Change Log and (2 column) Index.
+%\fi
+%    \begin{macrocode}
+\RecordChanges
+\CodelineIndex
+\EnableCrossrefs
+\setcounter{IndexColumns}{2}
+\settowidth\MacroIndent{\ttfamily\scriptsize 000\ }
+%    \end{macrocode}
+%\ifJAPANESE
+% この文書のタイトル・著者・日付を設定します。
+% \changes{v1.0c}{1997/01/29}{\file{pltpatch.ltx}を\file{plpatch.ltx}に名称変更}
+% \changes{v1.0h}{2016/05/08}{ドキュメントから\file{plpatch.ltx}を除外}
+% \changes{v1.0l}{2016/06/19}{パッチレベルを\file{plvers.dtx}から取得}
+% \changes{v1.0o}{2017/09/24}{パッチレベルが負の数の場合をpre-release扱いへ}
+% \changes{v1.0y}{2018/09/22}{最終更新日を\file{pldoc.pdf}に表示}
+%\else
+% Set the title, authors and the date for this document.
+% \changes{v1.0c}{1997/01/29}{Rename \file{pltpatch.ltx} to \file{plpatch.ltx}.}
+% \changes{v1.0h}{2016/05/08}{Exclude \file{plpatch.ltx} from the document}
+% \changes{v1.0l}{2016/06/19}{Get the patch level from \file{plvers.dtx}}
+% \changes{v1.0o}{2017/09/24}{Allow negative patch level for pre-release}
+% \changes{v1.0y}{2018/09/22}{Show last update info on \file{pldoc.pdf}}
+%\fi
+%    \begin{macrocode}
+ \title{The \pLaTeXe\ Sources}
+ \author{Ken Nakano \& Japanese \TeX\ Development Community}
+
+% Get the date and patch level from plvers.dtx
+\makeatletter
+\let\patchdate=\@empty
+\begingroup
+   \def\ProvidesFile#1\pfmtversion#2#3\ppatch@level#4{%
+      \date{#2}\xdef\patchdate{#4}\endinput}
+   \input{plvers.dtx}
+\endgroup
+
+% Add the patch version if available.
+\def\Xpatch{0}
+\ifx\patchdate\Xpatch\else
+% number is assumed
+\ifnum\patchdate>0
+  \edef\@date{\@date\space Patch level\space\patchdate}
+\else
+  \edef\@date{\@date\space Pre-Release\patchdate}
+\fi\fi
+
+% Add the last update info, in case format date unchanged
+% Note: \@ifl@t@r can be used only in preamble.
+\def\lastupd@te{0000/00/00}
+\begingroup
+   \def\ProvidesFile#1[#2 #3]{%
+      \def\@tempd@te{#2}\endinput
+      \@ifl@t@r{\@tempd@te}{\lastupd@te}{%
+         \global\let\lastupd@te\@tempd@te
+      }{}}
+   \let\ProvidesClass\ProvidesFile
+   \let\ProvidesPackage\ProvidesFile
+   \input{plvers.dtx}
+   \input{plexpl3.dtx}
+   \input{plfonts.dtx}
+   \input{plcore.dtx}
+   \input{plext.dtx}
+   \input{pl209.dtx}
+   \input{kinsoku.dtx}
+   \input{jclasses.dtx}
+   \input{jltxdoc.cls}
+\endgroup
+\@ifl@t@r{\lastupd@te}{\pfmtversion}{%
+  \edef\@date{\@date\break (last updated: \lastupd@te)}%
+}{}
+\makeatother
+%    \end{macrocode}
+%\ifJAPANESE
+% ここからが本文ページとなります。
+% \changes{v1.1a}{2020/09/26}{\file{plexpl3.dtx}を追加}
+%\else
+% Here starts the document body.
+% \changes{v1.1a}{2020/09/26}{Add \file{plexpl3.dtx}}
+%\fi
+%    \begin{macrocode}
+\begin{document}
+\pagenumbering{roman}
+\maketitle
+\renewcommand\maketitle{}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\DocInclude{plvers}   % pLaTeX version
+
+\DocInclude{plexpl3}  % additions to expl3
+
+\DocInclude{plfonts}  % NFSS2 commands
+
+\DocInclude{plcore}   % kernel commands
+
+\DocInclude{plext}    % external commands
+
+\DocInclude{pl209}    % 2.09 compatibility mode commands
+
+\DocInclude{kinsoku}  % kinsoku parameter
+
+\DocInclude{jclasses} % Standard class
+
+\DocInclude{jltxdoc}  % dtx documents class
+
+%    \end{macrocode}
+%\ifJAPANESE
+% \file{ltxdoc.cfg}に|\AtEndOfClass{\OnlyDescription}|が指定されている場合は、
+% ここで終了します。
+%\else
+% Stop here if \file{ltxdoc.cfg} says |\AtEndOfClass{\OnlyDescription}|.
+%\fi
+%    \begin{macrocode}
+\StopEventually{\end{document}}
+
+%    \end{macrocode}
+%\ifJAPANESE
+% 変更履歴と索引を組版します。
+% 変更履歴ファイルと索引の作り方の詳細については、
+% おまけ\ref{app:shprog}を参照してください。
+%\else
+% Print Change History and Index.
+% Please refer to Appendix \ref{app:shprog} for
+% processing of Change History and Index.
+%\fi
+%    \begin{macrocode}
+\clearpage
+\pagestyle{headings}
+% Make TeX shut up.
+\hbadness=10000
+\newcount\hbadness
+\hfuzz=\maxdimen
+%
+\PrintChanges
+\clearpage
+%
+\begingroup
+  \def\endash{--}
+  \catcode`\-\active
+  \def-{\futurelet\temp\indexdash}
+  \def\indexdash{\ifx\temp-\endash\fi}
+
+  \PrintIndex
+\endgroup
+%    \end{macrocode}
+%\ifJAPANESE
+% \file{ltxdoc.cfg}に2度目の|\PrintIndex|が指定されているかもしれません。
+% そこで、最後に、変更履歴や索引が2度組版されないように|\PrintChanges|および
+% |\PrintIndex|コマンドを何も実行しないようにします。
+%\else
+% Make sure that the index is not printed twice
+% (ltxdoc.cfg might have a second \PrintIndex command).
+%\fi
+%    \begin{macrocode}
+\let\PrintChanges\relax
+\let\PrintIndex\relax
+\end{document}
+%</pldoc>
+%    \end{macrocode}
+%
+%
+%
+%\ifJAPANESE
+% \section{おまけプログラム}\label{app:omake}
+%
+% \subsection{シェルスクリプト\file{mkpldoc.sh}}\label{app:shprog}
+% \pLaTeXe{}のマクロ定義ファイルをまとめて組版し、変更履歴と索引も
+% 付けるときに便利なシェルスクリプトです。
+% このシェルスクリプト\footnote{このシェルスクリプトはUNIX用です。
+% しかしrmコマンドをdeleteコマンドにするなどすれば、簡単にDOSなどのバッチ
+% ファイルに修正することができます。}の使用方法は次のとおりです。
+%\begin{verbatim}
+%    sh mkpldoc.sh
+%\end{verbatim}
+%\else
+% \section{Additional Utility Programs}\label{app:omake}
+%
+% \subsection{Shell Script \file{mkpldoc.sh}}\label{app:shprog}
+% A shell script to process `pldoc.tex' and produce a fully indexed
+% source code description. Run |sh mkpldoc.sh| to use it.
+%\fi
+%
+%\ifJAPANESE
+% \subsubsection{\file{mkpldoc.sh}の内容}
+% まず、以前に\file{pldoc.tex}を処理したときに作成された、
+% 目次ファイルや索引ファイルなどを削除します。
+% \changes{v1.0c}{1997/01/23}{gind.istとgglo.istを
+%        \$TEXMF/tex/latex2e/baseディレクトリからコピーしないようにした}
+% \changes{v1.0d}{2016/01/27}{rmコマンド実行前に存在確認するようにした}
+%\else
+% \subsubsection{Content of \file{mkpldoc.sh}}
+% First, delete auxiliary files which might be created in the
+% previous runs.
+% \changes{v1.0c}{1997/01/23}{Don't copy gind.ist and gglo.ist from
+%        \$TEXMF/tex/latex2e/base directory.}
+% \changes{v1.0d}{2016/01/27}{Add -e test before rm command}
+%\fi
+%    \begin{macrocode}
+%<*shprog>
+%<ja>rm -f pldoc.toc pldoc.idx pldoc.glo
+%<en>rm -f pldoc-en.toc pldoc-en.idx pldoc-en.glo
+%    \end{macrocode}
+%\ifJAPANESE
+% そして、\file{ltxdoc.cfg}を空にします。
+% このファイルは、\file{jltxdoc.cls}の定義を変更するものですが、
+% ここでは、変更されたくありません。
+%\else
+% First run: empty the config file \file{ltxdoc.cfg}.
+%\fi
+%    \begin{macrocode}
+echo "" > ltxdoc.cfg
+%    \end{macrocode}
+%\ifJAPANESE
+% そして、\file{pldoc.tex}を処理します。
+%\else
+% Now process \file{pldoc.tex}.
+%\fi
+%    \begin{macrocode}
+%<ja>platex pldoc.tex
+%<en>platex -jobname=pldoc-en pldoc.tex
+%    \end{macrocode}
+%\ifJAPANESE
+% 索引と変更履歴を作成します。
+% このスクリプトでは、変更履歴や索引を生成するのにmendexプログラムを用いて
+% います。mendexはmakeindexの上位互換のファイル整形コマンドで、
+% 索引語の読みを自動的に付けるなどの機能があります。
+%
+% |-s|オプションは、索引ファイルを整形するためのスタイルオプションです。
+% 索引用の\file{gind.ist}と変更履歴用の\file{gglo.ist}は、
+% \LaTeX{}のディストリビューションに付属しています。
+%
+% |-o|は、出力するファイル名を指定するオプションです。
+%
+% |-f|は、項目に``読み''がなくてもエラーとしないオプションです。
+% makeindexコマンドには、このオプションがありません。
+%\else
+% Make the Change log and Glossary (Change History) using mendex.
+% `Mendex' is a Japanese index processor, which is mostly upward
+% compatible with `makeindex' and automatically handles readings
+% of Kanji words.
+%
+% Option |-s| employs a style file for formatting.
+% Here we use \file{gind.ist} and \file{gglo.ist} from \LaTeXe.
+%
+% Option |-o| specifies output index file name.
+%
+% Option |-f| forces to output Kanji characters even non-existent
+% in dictionaries. (Makeindex does not have this option.)
+%\fi
+%    \begin{macrocode}
+%<ja>mendex -s gind.ist -d pldoc.dic -o pldoc.ind pldoc.idx
+%<en>mendex -s gind.ist -d pldoc.dic -o pldoc-en.ind pldoc-en.idx
+%<ja>mendex -f -s gglo.ist -o pldoc.gls pldoc.glo
+%<en>mendex -f -s gglo.ist -o pldoc-en.gls pldoc-en.glo
+%    \end{macrocode}
+%\ifJAPANESE
+% \file{ltxdoc.cfg}の内容を|\includeonly{}|にし、\file{pldoc.tex}を処理します。
+% このコマンドは、引数に指定されたファイルだけを``|\include|''するための
+% コマンドですが、ここでは何も|\include|したく\emph{ない}ので、
+% 引数には何も指定をしません。
+% しかし、|\input|で指定されているファイルは読み込まれます。
+% したがって、目次や索引や変更履歴のファイルが処理されます。
+% この処理は、主に、これらでエラーが出るかどうかの確認です。
+%\else
+% Second run: append |\includeonly{}| to \file{ltxdoc.cfg} to
+% speed up things. This run is needed only to get changes and index
+% listed in \file{.toc} file.
+%\fi
+%    \begin{macrocode}
+echo "\includeonly{}" > ltxdoc.cfg
+%<ja>platex pldoc.tex
+%<en>platex -jobname=pldoc-en pldoc.tex
+%    \end{macrocode}
+%\ifJAPANESE
+% 最後に、再び\file{ltxdoc.cfg}を空にして、\file{pldoc.tex}を処理をします。
+% 本文を1ページから開始していますので、この後、もう一度処理をする
+% 必要はありません。
+%\else
+% Third and final run: restore the cfg file to put
+% everything together.
+%\fi
+%    \begin{macrocode}
+echo "" > ltxdoc.cfg
+%<ja>platex pldoc.tex
+%<en>platex -jobname=pldoc-en pldoc.tex
+# EOT
+%</shprog>
+%    \end{macrocode}
+%
+%
+%\ifJAPANESE
+% \subsection{Perlスクリプト\file{dstcheck.pl}}\label{app:plprog}
+% \dst{}文書ファイルは、\LaTeX{}のソースとその文書を同時に管理する方法として、
+% とてもすぐれていると思います。しかし、たとえば\file{jclasses.dtx}のように、
+% 条件が多くなると、入れ子構造がわからなくなってしまいがちです。
+% \LaTeX{}で処理すれば、エラーによってわかりますが、
+% 文書ファイルが大きくなると面倒です。
+%
+% ここでは、\dst{}文書ファイルの入れ子構造を調べるのに便利な、
+% perlスクリプトについて説明をしています。
+%
+% このperlスクリプトの使用方法は次のとおりです。
+%\else
+% \subsection{Perl Script \file{dstcheck.pl}}\label{app:plprog}
+% Here we provide a perl script which helps checking the nested
+% \dst\ guards. Usage:
+%\fi
+%
+%\begin{verbatim}
+%    perl dstcheck.pl <file-name>
+%\end{verbatim}
+%
+%\ifJAPANESE
+%\else
+% The description of this script itself is available only in Japanese.
+%\fi
+%
+%\ifJAPANESE
+% \subsubsection{\file{dstcheck.pl}の内容}
+% 最初に、このperlスクリプトが何をするのかを簡単に記述したコメントを
+% 付けます。
+%\fi
+%    \begin{macrocode}
+%<*plprog>
+##
+## DOCSTRIP 文書内の環境や条件の入れ子を調べる perl スクリプト
+##
+%    \end{macrocode}
+%\ifJAPANESE
+% このスクリプトは、入れ子の対応を調べるために、次のスタックを用います。
+% \meta{条件}あるいは\meta{環境}を開始するコードが現れたときに、
+% それらはスタックにプッシュされ、終了するコードでポップされます。
+% したがって、現在の\meta{条件}あるいは\meta{環境}と、
+% スタックから取り出した\meta{条件}あるいは\meta{環境}と一致すれば、
+% 対応が取れているといえます。そうでなければエラーです。
+%
+% |@dst|スタックには、\meta{条件}が入ります。
+% 条件の開始は、``|%<*|\meta{条件}|>|''です。
+% 条件の終了は、``|%</|\meta{条件}|>|''です。
+% \meta{条件}には、|>|文字が含まれません。
+% |@env|スタックには、\meta{環境}が入ります。
+%
+% 先頭を明示的に示すために、ダミーの値を初期値として用います。
+% スタックは、\meta{条件}あるいは\meta{環境}の名前と、その行番号をペアにして
+% 操作をします。
+%\fi
+%    \begin{macrocode}
+push(@dst,"DUMMY"); push(@dst,"000");
+push(@env,"DUMMY"); push(@env,"000");
+%    \end{macrocode}
+%\ifJAPANESE
+% この|while|ループの中のスクリプトは、文書ファイルの１行ごとに実行をします。
+%\fi
+%    \begin{macrocode}
+while (<>) {
+%    \end{macrocode}
+%\ifJAPANESE
+% 入力行が条件を開始する行なのかを調べます。
+% 条件の開始行ならば、|@dst|スタックに\meta{条件}と行番号をプッシュします。
+%\fi
+%    \begin{macrocode}
+  if (/^%<\*([^>]+)>/) { # check conditions
+    push(@dst,$1);
+    push(@dst,$.);
+%    \end{macrocode}
+%\ifJAPANESE
+% そうでなければ、条件の終了行なのかを調べます。
+% 現在行が条件の終了を示している場合は、|@dst|スタックをポップします。
+%\fi
+%    \begin{macrocode}
+  } elsif (/^%<\/([^>]+)>/) {
+    $linenum = pop(@dst);
+    $conditions = pop(@dst);
+%    \end{macrocode}
+%\ifJAPANESE
+% 現在行の\meta{条件}と、スタックから取り出した\meta{条件}が一致しない場合、
+% その旨のメッセージを出力します。
+%
+% なお、|DUMMY|と一致した場合は、一番外側のループが合っていないと
+% いうことを示しています。このとき、これらのダミー値をスタックに戻します。
+% いつでもスタックの先頭をダミー値にするためです。
+%\fi
+%    \begin{macrocode}
+    if ($1 ne $conditions) {
+      if ($conditions eq "DUMMY") {
+        print "$ARGV: `</$1>' (l.$.) is not started.\n";
+        push(@dst,"DUMMY");
+        push(@dst,"000");
+      } else {
+        print "$ARGV: `<*$conditions>' (l.$linenum) is ended ";
+        print "by `<*$1>' (l.$.)\n";
+      }
+    }
+  }
+%    \end{macrocode}
+%\ifJAPANESE
+% 環境の入れ子も条件と同じように調べます。
+%
+% verbatim環境のときに、その内側をスキップしていることに注意をしてください。
+%\fi
+%    \begin{macrocode}
+  if (/^% *\\begin\{verbatim\}/) { # check environments
+    while(<>) {
+        last if (/^% *\\end\{verbatim\}/);
+    }
+  } elsif (/^% *\\begin\{([^{}]+)\}\{(.*)\}/) {
+    push(@env,$1);
+    push(@env,$.);
+  } elsif (/^% *\\begin\{([^{}]+)\}/) {
+    push(@env,$1);
+    push(@env,$.);
+  } elsif (/^% *\\end\{([^{}]+)\}/) {
+    $linenum = pop(@env);
+    $environment = pop(@env);
+    if ($1 ne $environment) {
+      if ($environment eq "DUMMY") {
+        print "$ARGV: `\\end{$1}' (l.$.) is not started.\n";
+        push(@env,"DUMMY");
+        push(@env,"000");
+      } else {
+        print "$ARGV: \\begin{$environement} (l.$linenum) is ended ";
+        print "by \\end{$1} (l.$.)\n";
+      }
+    }
+  }
+%    \end{macrocode}
+%\ifJAPANESE
+% ここまでが、最初の|while|ループです。
+%\fi
+%    \begin{macrocode}
+}
+%    \end{macrocode}
+%\ifJAPANESE
+% 文書ファイルを読み込んだ後、終了していない条件があるかどうかを確認します。
+% すべての条件の対応がとれていれば、この時点での|@dst|スタックには
+% ダミー値しか入っていません。したがって、対応が取れている場合は、
+% 最初の２つのポップによって、ダミー値が設定されます。
+% ダミー値でなければ、ダミー値になるまで、取り出した値を出力します。
+%\fi
+%    \begin{macrocode}
+$linenum = pop(@dst);
+$conditions = pop(@dst);
+while ($conditions ne "DUMMY") {
+    print "$ARGV: `<*$conditions>' (l.$linenum) is not ended.\n";
+    $linenum = pop(@dst);
+    $conditions = pop(@dst);
+}
+%    \end{macrocode}
+%\ifJAPANESE
+% 環境の入れ子についても、条件の入れ子と同様に確認をします。
+%\fi
+%    \begin{macrocode}
+$linenum = pop(@env);
+$environment = pop(@env);
+while ($environment ne "DUMMY") {
+    print "$ARGV: `\\begin{$environment}' (l.$linenum) is not ended.\n";
+    $linenum = pop(@env);
+    $environment = pop(@env);
+}
+exit;
+%</plprog>
+%    \end{macrocode}
+%
+%\ifJAPANESE
+% \subsection{\dst{}バッチファイル}
+% \changes{v1.0b}{1996/02/01}{\file{omake-sh.ins}, \file{omake-pl.ins}を
+%     \dst{}の変更にともなう変更をした}
+% \changes{v1.0c}{1997/01/23}{\dst{}にともなう変更}
+% ここでは、付録\ref{app:shprog}と付録\ref{app:plprog}で説明をした二つの
+% スクリプトを、このファイルから取り出すための\dst{}バッチファイルについて
+% 説明をしています。
+%\else
+% \subsection{\dst{} Batch file}
+% \changes{v1.0b}{1996/02/01}{Adjusted for the latest
+%    \dst\ (\file{omake-sh.ins} and \file{omake-pl.ins}.}
+% \changes{v1.0c}{1997/01/23}{Adjusted for the latest \dst.}
+% Here we introduce a \dst\ batch file `Xins.ins,' which generates the
+% scripts described in Appendix \ref{app:shprog} and \ref{app:plprog}.
+%\fi
+%
+%\ifJAPANESE
+% まず、\dst{}パッケージをロードします。
+% また、実行経過のメッセージを出力しないようにしています。
+%\fi
+%    \begin{macrocode}
+%<*Xins>
+\input docstrip
+\keepsilent
+%    \end{macrocode}
+%\ifJAPANESE
+% \dst{}プログラムは、連続する二つのパーセント記号(\%\%)ではじまる行を
+% メタコメントとみなし、条件によらず出力をします。
+% しかし、``\%''は\TeX{}ではコメントであっても、shやperlにとってはコメント
+% ではありません。そこで、メタコメントとして出力する文字を``\#\#''と
+% 変更します。
+%\fi
+%    \begin{macrocode}
+{\catcode`#=12 \gdef\MetaPrefix{## }}
+%    \end{macrocode}
+%\ifJAPANESE
+% そして、プリアンブルに出力されるメッセージを宣言します。
+% ここでは、とくに何も指定していませんが、宣言をしないとデフォルトの記述が
+% `\%\%'付きで出力されてしまうため、それを抑制する目的で使用しています。
+%\fi
+%    \begin{macrocode}
+\declarepreamble\thispre
+\endpreamble
+\usepreamble\thispre
+%    \end{macrocode}
+%\ifJAPANESE
+% ポストアンブルも同様に、宣言をしないと`|\endinput|'が出力されます。
+%\fi
+%    \begin{macrocode}
+\declarepostamble\thispost
+\endpostamble
+\usepostamble\thispost
+%    \end{macrocode}
+%\ifJAPANESE
+% |\generate|コマンドで、どのファイルに、どのファイルのどの部分を出力するのか
+% を指定します。
+%\fi
+%    \begin{macrocode}
+\generate{
+   \file{dstcheck.pl}{\from{platex.dtx}{plprog}}
+   \file{mkpldoc.sh}{\from{platex.dtx}{shprog,ja}}
+   \file{mkpldoc-en.sh}{\from{platex.dtx}{shprog,en}}
+}
+\endbatchfile
+%</Xins>
+%    \end{macrocode}
+%
+% \newpage
+% \begin{thebibliography}{99}
+% \bibitem{platex2e-book}
+% 中野 賢
+% \newblock 『日本語\LaTeXe ブック』
+% \newblock アスキー, 1996.
+%
+% \bibitem{tate-book}
+% インプレス・ラボ監修, アスキー書籍編集部編
+% \newblock 『縦組対応 パーソナル日本語\TeX{}』
+% \newblock アスキー出版局, 1994
+%
+% \bibitem{jtex-tech}
+% アスキー出版技術部責任編集
+% \newblock 『日本語\TeX テクニカルブックI』
+% \newblock アスキー, 1990.
+%
+% \bibitem{ajt2008okumura}
+% Haruhiko Okumura,
+% \newblock ``{\em \pTeX\ and Japanese Typesetting}''.
+% \newblock The Asian Journal of \TeX, Volume~2, No.~1, 2008.\\
+% (\texttt{http://ajt.ktug.org/2008/0201okumura.pdf})
+%
+% \bibitem{tb29hamano}
+% Hisato Hamano,
+% \newblock ``{\em Vertical Typesetting with \TeX}''.
+% \newblock TUGboat issue 11:3, 1990.\\
+% (\texttt{https://tug.org/TUGboat/tb11-3/tb29hamano.pdf})
+%
+% \bibitem{tex-book}
+% Donald~E. Knuth.
+% \newblock ``{\em The \TeX book}''.
+% \newblock Addison-Wesley, 1984.
+% \newblock (邦訳：斎藤信男監修, 鷺谷好輝訳,
+%             \TeX ブック 改訂新版, アスキー出版局, 1989)
+%
+% \bibitem{latex-book2}
+% Laslie Lamport.
+% \newblock ``{\em {\LaTeX:} A Document Preparation System}''.
+% \newblock Addison-Wesley, second edition, 1994.
+%
+% \bibitem{latex-book}
+% Laslie Lamport.
+% \newblock ``{\em {\LaTeX:} A Document Preparation System}''.
+% \newblock Addison-Wesley, 1986.
+% \newblock (邦訳：倉沢良一監修, 大野俊治・小暮博通・藤浦はる美訳,
+%            文書処理システム \LaTeX, アスキー, 1990)
+%
+% \bibitem{latex-comp}
+% Michel Goossens, Frank Mittelbach, Alexander Samarin.
+% \newblock ``{\em The {\LaTeX} Companion}''.
+% \newblock Addison-Wesley, 1994.
+%
+% \bibitem{perl}
+% 河野 真治
+% \newblock 『入門Perl』
+% \newblock アスキー出版局, 1994
+% \end{thebibliography}
+%
+% \iffalse
+% ここで、このあとに組版されるかもしれない文書のために、
+% 節見出しの番号を算用数字に戻します。
+% \fi
+%
+% \renewcommand{\thesection}{\arabic{section}}
+%
+% \Finale
+%
+\endinput

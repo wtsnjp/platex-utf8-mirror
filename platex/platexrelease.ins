@@ -1,0 +1,27 @@
+\input docstrip
+\keepsilent
+\ifToplevel{\askonceonly}
+\usedir{tex/platex/base}
+
+\Msg{*** Generating the pLaTeX files for supporting latexrelease ***}
+
+\preamble
+
+Copyright (c) 2016-2020 Japanese TeX Development Community
+
+This file is part of the pLaTeX2e system (community edition).
+-------------------------------------------------------------
+
+\endpreamble
+
+\generate{
+  \file{platexrelease.sty}{
+          \from{plvers.dtx}{platexrelease}
+          \from{platexrelease.dtx}{platexrelease}
+          \from{plvers.dtx}{plhookrelease}%% specific!
+          \from{plexpl3.dtx}{platexrelease}
+          \from{plfonts.dtx}{platexrelease}
+          \from{plcore.dtx}{platexrelease}}
+}
+
+\endbatchfile

@@ -1,0 +1,32 @@
+\input docstrip
+\keepsilent
+\ifToplevel{\askonceonly}
+\usedir{tex/platex/base}
+
+\Msg{*** Generating the pLaTeX compatibility mode files ***}
+
+\preamble
+
+Copyright (c) 2010 ASCII MEDIA WORKS
+Copyright (c) 2016-2018 Japanese TeX Development Community
+
+This file is part of the pLaTeX2e system (community edition).
+-------------------------------------------------------------
+
+\endpreamble
+
+\generate{
+    \file{pl209.def}{\from{pl209.dtx}{pl209}}
+    \file{oldpfont.sty}{\from{pl209.dtx}{oldfonts}}
+}
+
+\generate{
+    \file{jarticle.sty}{\from{pl209.dtx}{style,jarticle}}
+    \file{tarticle.sty}{\from{pl209.dtx}{style,tarticle}}
+    \file{jbook.sty}{\from{pl209.dtx}{style,jbook}}
+    \file{tbook.sty}{\from{pl209.dtx}{style,tbook}}
+    \file{jreport.sty}{\from{pl209.dtx}{style,jreport}}
+    \file{treport.sty}{\from{pl209.dtx}{style,treport}}
+}
+
+\endbatchfile

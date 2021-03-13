@@ -1,0 +1,38 @@
+\input docstrip
+\keepsilent
+\ifToplevel{\askonceonly}
+\usedir{tex/platex/base}
+
+\Msg{*** Generating the pLaTeX files for making the documents ***}
+
+\preamble
+
+Copyright (c) 2010 ASCII MEDIA WORKS
+Copyright (c) 2016-2020 Japanese TeX Development Community
+
+This file is part of the pLaTeX2e system (community edition).
+-------------------------------------------------------------
+
+\endpreamble
+
+\generate{
+  \file{platex.ltx}{\from{platex.dtx}{plcore}}
+  \file{plcore.ltx}{\from{plvers.dtx}{plcore}
+          \from{plexpl3.dtx}{plcore}
+          \from{plfonts.dtx}{plcore}
+          \from{plcore.dtx}{plcore}
+          \from{plvers.dtx}{plfinal}}
+  \file{kinsoku.tex}{\from{kinsoku.dtx}{plcore}}
+  \file{pldefs.ltx}{\from{plfonts.dtx}{pldefs,xpt}}
+  \file{jy1mc.fd}{\from{plfonts.dtx}{JY1mc}}
+  \file{jy1gt.fd}{\from{plfonts.dtx}{JY1gt}}
+  \file{jt1mc.fd}{\from{plfonts.dtx}{JT1mc}}
+  \file{jt1gt.fd}{\from{plfonts.dtx}{JT1gt}}
+  \file{plext.sty}{\from{plext.dtx}{package}}
+  \file{ptrace.sty}{\from{plfonts.dtx}{trace}}
+  \file{pfltrace.sty}{\from{plcore.dtx}{fltrace,trace}}
+  \file{plexpl3.sty}{\from{plexpl3.dtx}{package}}
+  \file{plexpl3.ltx}{\from{plexpl3.dtx}{code}}
+}
+
+\endbatchfile

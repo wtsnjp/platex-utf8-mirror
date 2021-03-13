@@ -1,0 +1,18 @@
+\documentclass{article}
+
+\addtolength\textheight{-30\baselineskip}
+\addtolength\headheight{10pt}
+
+% Show page head language not changed by verbatim in the page body
+% based on tlb-verb-003.lvt
+
+\makeatletter
+\def\@oddhead{\parbox{\textwidth}{[\thepage]
+Supercalifragilisticexpialidocious
+Supercalifragilisticexpialidocious
+Supercalifragilisticexpialidocious
+\the\language\typeout{lan=\the\language}}}
+\makeatother
+\begin{document}
+
+verbatim

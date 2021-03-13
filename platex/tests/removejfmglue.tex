@@ -1,0 +1,45 @@
+\documentclass{article}
+
+\makeatletter
+%% current
+% \protected\def\removejfmglue{%
+%   \ifnum\lastnodetype=\pltx@gluetype\relax
+%     \ifnum\lastnodesubtype=\pltx@jfmgluesubtype\relax
+%       \unskip
+%     \fi
+%   \fi}
+%% candidate 1
+  \protected\def\removejfmglueA{\inhibitglue
+    \ifnum\lastnodetype=\pltx@gluetype\relax
+      \ifnum\lastnodesubtype=\pltx@jfmgluesubtype\relax
+        \unskip
+      \fi
+    \fi}
+%% candidate 2
+  \protected\def\removejfmglueB{\relax
+    \ifnum\lastnodetype=\pltx@gluetype\relax
+      \ifnum\lastnodesubtype=\pltx@jfmgluesubtype\relax
+        \unskip
+      \fi
+    \fi}
+%% simplified
+\protected\def\removejfmglueC{\ifnum\lastnodechar=-1\else\unskip\fi}
+%% D? --- NO!
+\protected\def\removejfmglueD{%
+  \ifnum\lastnodechar=-1\else
+    \inhibitglue
+    \ifnum\lastnodetype=\pltx@gluetype\relax
+      \unskip
+    \fi
+  \fi
+}
+%%
+\makeatother
+
+\begin{document}
+
+\def\SHOWNODE{}%\showthe\lastnodetype \showthe\lastnodesubtype}
+\def\TT#1{\texttt{#1}\null}
+
+[JFM glue already inserted: should be removed!]\par
+\TT{0------}

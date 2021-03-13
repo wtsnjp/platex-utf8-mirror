@@ -1,0 +1,9 @@
+\documentclass{tarticle}
+\usepackage{plext}
+\DeclareLayoutCaption{r}<z>(5zw)[tu]
+% => should NOT define \r@layoutcaption
+\DeclareLayoutCaption{X}<z>(5zw)[tu]
+% => should NOT redefine \X@layoutcaption
+\begin{document}
+
+%\pcaption{
