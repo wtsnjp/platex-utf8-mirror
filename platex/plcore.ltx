@@ -33,8 +33,8 @@
 \fi
 \def\pfmtname{pLaTeX2e}
 \def\pfmtversion
-   {2020-03-01}
-\def\ppatch@level{-3}
+   {2020-02-02}
+\def\ppatch@level{3}
 \edef\platexBANNER{\noexpand\platexNILa
                    \the\everyjob % LaTeX banner and delayed codes
                    \noexpand\platexNILb}
@@ -134,15 +134,9 @@
 \newdimen\cHT
 \let\afont\font
 \def\inlist@#1#2{%
-  \edef\reserved@a{%
-    \unexpanded{\def\in@@##1<}%
-    \detokenize{#1}%
-    \unexpanded{>##2##3\in@@{\ifx\in@##2\in@false\else\in@true\fi}\in@@}%
-    \detokenize{#2}%
-    \unexpanded{<}%
-    \detokenize{#1}%
-    \unexpanded{>\in@\in@@}}%
-  \reserved@a}
+  \def\in@@##1<#1>##2##3\in@@{%
+    \ifx\in@##2\in@false\else\in@true\fi}%
+  \in@@#2<#1>\in@\in@@}
 \def\fam@elt{\noexpand\fam@elt}
 \def\enc@elt{\noexpand\enc@elt}
 \def\fenc@list{\enc@elt<OML>\enc@elt<T1>\enc@elt<OT1>\enc@elt<OMS>%
@@ -395,46 +389,6 @@
       \let\font\afont
    \endgroup
   }
-\def\pltx@do@subst@correction@al{%
-       \xdef\subst@correction{%
-          \font@name
-          \global\expandafter\font
-            \csname \curr@fontshape/\f@size\endcsname
-            \noexpand\fontname\font
-           \relax}%
-       \aftergroup\subst@correction
-}
-\def\pltx@do@subst@correction@yoko{%
-       \xdef\subst@correction{%
-          \font@name
-          \global\expandafter\jfont
-            \csname \curr@fontshape/\f@size\endcsname
-            \noexpand\fontname\jfont
-           \relax}%
-       \aftergroup\subst@correction
-}
-\def\pltx@do@subst@correction@tate{%
-       \xdef\subst@correction{%
-          \font@name
-          \global\expandafter\tfont
-            \csname \curr@fontshape/\f@size\endcsname
-            \noexpand\fontname\tfont
-           \relax}%
-       \aftergroup\subst@correction
-}
-\def\do@subst@correction{%
-  \edef\tmp@item{{\f@encoding}}%
-  \expandafter\expandafter\expandafter
-  \inlist@\expandafter\tmp@item\expandafter{\kyenc@list}%
-  \ifin@\pltx@do@subst@correction@yoko
-  \else
-    \expandafter\expandafter\expandafter
-    \inlist@\expandafter\tmp@item\expandafter{\ktenc@list}%
-    \ifin@\pltx@do@subst@correction@tate\else
-      \pltx@do@subst@correction@al
-    \fi
-  \fi
-}
 \def\reDeclareMathAlphabet#1#2#3{%
   \edef#1{\noexpand\protect\expandafter\noexpand\csname%
     \expandafter\@gobble\string#1\space\space\endcsname}%
@@ -1529,11 +1483,6 @@
     \language\l@nohyphenation
     \@ifstar\@sverb\@verb}
 \fi
-\def\do@noligs#1{%
-  \catcode`#1\active
-  \begingroup
-     \lccode`\~`#1\relax
-     \lowercase{\endgroup\def~{\leavevmode\vadjust{}\char`#1}}}
 \gdef\@startline{%
      \ifnum \@nxttabmar >\@hightab
        \@badtab
