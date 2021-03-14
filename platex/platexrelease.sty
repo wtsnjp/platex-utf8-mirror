@@ -18,7 +18,7 @@
 \edef\p@known@latexreleaseversion
    {2020-02-02}
 \edef\platexreleaseversion
-   {2020-03-01}
+   {2020-02-02}
 \newif\if@plincludeinrelease
 \@plincludeinreleasefalse
 \def\plIncludeInRelease#1{%
@@ -134,11 +134,6 @@ of this package available from CTAN}
       some critical bugs. We advise you to\MessageBreak
       select another format date}
 \plIncludeInRelease{2017/10/28}{\PackageWarning}{pLaTeX Info}%
-  % * <2020-03-01>
-  % * <2020-02-02>+2
-  % * <2020-02-02>+1
-  % * <2020-02-02>
-  % * <2019-10-01>+1
   % * <2019-10-01>
   % * <2019-04-06>
   % * <2018-12-01>
@@ -194,26 +189,6 @@ of this package available from CTAN}
   % * <2006/11/10>
 \plEndIncludeInRelease
 %% File: plfonts.dtx
-\plIncludeInRelease{2020/03/01}{\inlist@}
-                   {Detokenize}%
-\def\inlist@#1#2{%
-  \edef\reserved@a{%
-    \unexpanded{\def\in@@##1<}%
-    \detokenize{#1}%
-    \unexpanded{>##2##3\in@@{\ifx\in@##2\in@false\else\in@true\fi}\in@@}%
-    \detokenize{#2}%
-    \unexpanded{<}%
-    \detokenize{#1}%
-    \unexpanded{>\in@\in@@}}%
-  \reserved@a}
-\plEndIncludeInRelease
-\plIncludeInRelease{0000/00/00}{\inlist@}
-                   {ASCII Corporation original}%
-\def\inlist@#1#2{%
-  \def\in@@##1<#1>##2##3\in@@{%
-    \ifx\in@##2\in@false\else\in@true\fi}%
-  \in@@#2<#1>\in@\in@@}
-\plEndIncludeInRelease
 \plIncludeInRelease{2017/04/08}{\ystrutbox}
                    {Add \ystrutbox}%
 \newbox\ystrutbox
@@ -388,64 +363,6 @@ of this package available from CTAN}
    \gdef\f@size{#5}%
    \gdef\f@baselineskip{#5pt}}
 \plEndIncludeInRelease
-\plIncludeInRelease{2020/03/01}{\do@subst@correction}
-                   {Japanese font substitution}%
-\def\pltx@do@subst@correction@al{%
-       \xdef\subst@correction{%
-          \font@name
-          \global\expandafter\font
-            \csname \curr@fontshape/\f@size\endcsname
-            \noexpand\fontname\font
-           \relax}%
-       \aftergroup\subst@correction
-}
-\def\pltx@do@subst@correction@yoko{%
-       \xdef\subst@correction{%
-          \font@name
-          \global\expandafter\jfont
-            \csname \curr@fontshape/\f@size\endcsname
-            \noexpand\fontname\jfont
-           \relax}%
-       \aftergroup\subst@correction
-}
-\def\pltx@do@subst@correction@tate{%
-       \xdef\subst@correction{%
-          \font@name
-          \global\expandafter\tfont
-            \csname \curr@fontshape/\f@size\endcsname
-            \noexpand\fontname\tfont
-           \relax}%
-       \aftergroup\subst@correction
-}
-\def\do@subst@correction{%
-  \edef\tmp@item{{\f@encoding}}%
-  \expandafter\expandafter\expandafter
-  \inlist@\expandafter\tmp@item\expandafter{\kyenc@list}%
-  \ifin@\pltx@do@subst@correction@yoko
-  \else
-    \expandafter\expandafter\expandafter
-    \inlist@\expandafter\tmp@item\expandafter{\ktenc@list}%
-    \ifin@\pltx@do@subst@correction@tate\else
-      \pltx@do@subst@correction@al
-    \fi
-  \fi
-}
-\plEndIncludeInRelease
-\plIncludeInRelease{0000/00/00}{\do@subst@correction}
-                   {LaTeX2e original}%
-\def\do@subst@correction{%
-       \xdef\subst@correction{%
-          \font@name
-          \global\expandafter\font
-            \csname \curr@fontshape/\f@size\endcsname
-            \noexpand\fontname\font
-           \relax}%
-       \aftergroup\subst@correction
-}
-\let\pltx@do@subst@correction@al\@undefined
-\let\pltx@do@subst@correction@yoko\@undefined
-\let\pltx@do@subst@correction@tate\@undefined
-\plEndIncludeInRelease
 \plIncludeInRelease{2019/10/01}{\userelfont}
                    {Make robust}%
 \DeclareRobustCommand\userelfont{\@knjcmdtrue}
@@ -572,20 +489,21 @@ of this package available from CTAN}
 \plEndIncludeInRelease
 \ifx\fontseriesforce\@undefined      % old
 \else                                % 2020-02-02
-  \ifx\series@maybe@drop@one@m\@undefined     % patch level 0--4
+  \ifx\@forced@seriestrue\@undefined % patch level 0, 1, 2
     \@latex@error
       {Please update LaTeX2e!^^J\space\space
-       At least LaTeX2e 2020-02-02 patch level 5 is required}
-      {LaTeX2e 2020-02-02 patch level 2 and 4 has a bug.}
-  \else
-    \ifx\series@maybe@drop@one@m@x\@undefined % patch level 5
-      % anticipating LaTeX2e 'develop' branch (after 23b7244)
-      % this temporary code will be removed in the future
-      \let\series@maybe@drop@one@m@x\series@maybe@drop@one@m
-      \def\series@maybe@drop@one@m#1{%
-        \expandafter\series@maybe@drop@one@m@x\expandafter{#1}}
-    \fi
+       At least LaTeX2e 2020-02-02 patch level 3 is required}
+      {LaTeX2e 2020-02-02 patch level 2 has a bug.}
   \fi
+  % actually we'd like to check the below too,
+  % but commented out for TL19 frozen since
+  % platex-dev format generation fails
+  %\ifx\series@maybe@drop@one@m\@undefined % patch level 0--4
+  %  \@latex@error
+  %    {Please update LaTeX2e!^^J\space\space
+  %     At least LaTeX2e 2020-02-02 patch level 5 is required}
+  %    {LaTeX2e 2020-02-02 patch level 2 and 4 has a bug.}
+  %\fi
 \fi
 \ifx\fontseriesforce\@undefined  % old
 \DeclareRobustCommand\romanseries[1]{\edef\f@series{#1}}
@@ -637,10 +555,17 @@ of this package available from CTAN}
     \fi
   \fi
 }
+\ifx\series@maybe@drop@one@m\@undefined % patch level 0--4
 \def\set@target@series@kanji#1{%
     \edef\k@series{#1}%
-    \series@maybe@drop@one@m\k@series\k@series
+    \edef\k@series{\expandafter\series@drop@one@m\k@series mm\series@drop@one@m}%
 }
+\else                                   % patch level 5
+\def\set@target@series@kanji#1{%
+    \edef\k@series{#1}%
+    \expandafter\series@maybe@drop@one@m\expandafter{\k@series}\k@series
+}
+\fi
 \fi
 \ifx\fontshapeforce\@undefined   % old
 \DeclareRobustCommand\romanshape[1]{\edef\f@shape{#1}}
@@ -852,7 +777,7 @@ of this package available from CTAN}
      \ifx \f@series\target@series@value
      \else
        \maybe@load@fontshape
-       \series@maybe@drop@one@m\target@series@value\f@series
+       \let\f@series\target@series@value
      \fi
    \fi
  \fi
@@ -876,7 +801,7 @@ of this package available from CTAN}
      \else
        \begingroup\let\f@encoding\k@encoding\let\f@family\k@family
          \maybe@load@fontshape\endgroup
-       \series@maybe@drop@one@m\target@series@value\k@series
+       \let\k@series\target@series@value
      \fi
    \fi
  \fi
@@ -892,14 +817,9 @@ of this package available from CTAN}
                       \csname mdseries@\target@meta@family@value\endcsname
       \expandafter\let\expandafter\reserved@c
                       \csname bfseries@\target@meta@family@value\endcsname
-      \expandafter\series@maybe@drop@one@m
-          \csname mdseries@#1\endcsname\reserved@d
-      \ifx\reserved@d\k@series
+      \expandafter\ifx\csname mdseries@#1\endcsname\k@series
                                       \let\target@series@value\reserved@b
-      \else
-        \expandafter\series@maybe@drop@one@m
-           \csname bfseries@#1\endcsname\reserved@d
-        \ifx\reserved@d\k@series
+      \else\expandafter\ifx\csname bfseries@#1\endcsname\k@series
                                       \let\target@series@value\reserved@c
       \else\ifx\k@series\mddef@ult    \let\target@series@value\reserved@b
       \else\ifx\k@series\bfdef@ult    \let\target@series@value\reserved@c
@@ -2176,22 +2096,6 @@ of this package available from CTAN}
     \verbatim@font\@noligs
     \@ifstar\@sverb\@verb}
 \fi
-\plEndIncludeInRelease
-\plIncludeInRelease{2020/03/01}{\do@noligs}
-                   {Allow \xkanjiskip while avoiding ligature}%
-\def\do@noligs#1{%
-  \catcode`#1\active
-  \begingroup
-     \lccode`\~`#1\relax
-     \lowercase{\endgroup\def~{\leavevmode\vadjust{}\char`#1}}}
-\plEndIncludeInRelease
-\plIncludeInRelease{0000/00/00}{\do@noligs}
-                   {LaTeX2e original}%
-\def\do@noligs#1{%
-  \catcode`#1\active
-  \begingroup
-     \lccode`\~`#1\relax
-     \lowercase{\endgroup\def~{\leavevmode\kern\z@\char`#1}}}
 \plEndIncludeInRelease
 \plIncludeInRelease{2017/10/28}{\@startline}
                    {Inhibit JFM glue at the beginning}%

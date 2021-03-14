@@ -145,16 +145,13 @@
 %    (sync with ltfssaxes.dtx 2020/02/27 v1.0d)}
 % \changes{v1.6z}{2020/02/28}{Drop surplus ``m'' from \cs{target@series@value}
 %    (sync with ltfssini.dtx 2020/02/25 v3.1j)}
-% \changes{v1.7}{2020/02/29}{\cs{series@maybe@drop@one@m@x}の存在確認}
-% \changes{v1.7}{2020/02/29}{引数・リストとも\cs{detokenize}によって文字列化}
-% \changes{v1.7}{2020/02/29}{\cs{do@subst@correction}の日本語化}
 % \fi
 %
 % \iffalse
 %<*driver>
 \NeedsTeXFormat{pLaTeX2e}
 % \fi
-\ProvidesFile{plfonts.dtx}[2020/02/29 v1.7 pLaTeX New Font Selection Scheme]
+\ProvidesFile{plfonts.dtx}[2020/02/28 v1.6z pLaTeX New Font Selection Scheme]
 % \iffalse
 \documentclass{jltxdoc}
 \GetFileInfo{plfonts.dtx}
@@ -405,43 +402,12 @@
 % 
 % \begin{macro}{\inlist@}
 % 次のコマンドは、エンコードやファミリのリスト内に第二引数で指定された文字列
-% があるかどうかを調べるマクロです。結果は\cs{ifin@}に格納されます。
-% 第二引数はリストそのもの（リストが格納されたマクロではなく）を指定することになります。
-% 典型的には以下のように呼び出します。
-%\begin{verbatim}
-% \edef\tmp@item{{\k@encoding}}%
-% \expandafter\expandafter\expandafter
-% \inlist@\expandafter\tmp@item\expandafter{\kyenc@list}
-%\end{verbatim}
-%
-% |\do@subst@correction|の日本語化に必要なので、
-% 比較する際に引数・リストとも\cs{detokenize}によって文字列化するようにしました。
-% \changes{v1.7}{2020/02/29}{引数・リストとも\cs{detokenize}によって文字列化}
+% があるかどうかを調べるマクロです。
 %    \begin{macrocode}
-%</plcore>
-%<platexrelease>\plIncludeInRelease{2020/03/01}{\inlist@}
-%<platexrelease>                   {Detokenize}%
-%<*plcore|platexrelease>
 \def\inlist@#1#2{%
-  \edef\reserved@a{%
-    \unexpanded{\def\in@@##1<}%
-    \detokenize{#1}%
-    \unexpanded{>##2##3\in@@{\ifx\in@##2\in@false\else\in@true\fi}\in@@}%
-    \detokenize{#2}%
-    \unexpanded{<}%
-    \detokenize{#1}%
-    \unexpanded{>\in@\in@@}}%
-  \reserved@a}
-%</plcore|platexrelease>
-%<platexrelease>\plEndIncludeInRelease
-%<platexrelease>\plIncludeInRelease{0000/00/00}{\inlist@}
-%<platexrelease>                   {ASCII Corporation original}%
-%<platexrelease>\def\inlist@#1#2{%
-%<platexrelease>  \def\in@@##1<#1>##2##3\in@@{%
-%<platexrelease>    \ifx\in@##2\in@false\else\in@true\fi}%
-%<platexrelease>  \in@@#2<#1>\in@\in@@}
-%<platexrelease>\plEndIncludeInRelease
-%<*plcore>
+  \def\in@@##1<#1>##2##3\in@@{%
+    \ifx\in@##2\in@false\else\in@true\fi}%
+  \in@@#2<#1>\in@\in@@}
 %    \end{macrocode}
 % \end{macro}
 %
@@ -1145,90 +1111,6 @@
    \endgroup
   }
 %    \end{macrocode}
-% \end{macro}
-%
-% \begin{macro}{\do@subst@correction}
-% \begin{macro}{\pltx@do@subst@correction@al}
-% \begin{macro}{\pltx@do@subst@correction@yoko}
-% \begin{macro}{\pltx@do@subst@correction@tate}
-% |\font|は欧文フォントを返すため、\LaTeX{}の元の|\do@subst@correction|は
-% 和文フォントに対して使えませんので、和文に対応させます。
-% \changes{v1.7}{2020/02/29}{\cs{do@subst@correction}の日本語化}
-%
-% オリジナルの\LaTeX{}の定義は、欧文用として使います。
-%    \begin{macrocode}
-%</plcore>
-%<platexrelease>\plIncludeInRelease{2020/03/01}{\do@subst@correction}
-%<platexrelease>                   {Japanese font substitution}%
-%<*plcore|platexrelease>
-\def\pltx@do@subst@correction@al{%
-       \xdef\subst@correction{%
-          \font@name
-          \global\expandafter\font
-            \csname \curr@fontshape/\f@size\endcsname
-            \noexpand\fontname\font
-           \relax}%
-       \aftergroup\subst@correction
-}
-%    \end{macrocode}
-% 和文横組用と和文縦組用の定義では、それぞれ|\jfont|と|\tfont|を使います。
-%    \begin{macrocode}
-\def\pltx@do@subst@correction@yoko{%
-       \xdef\subst@correction{%
-          \font@name
-          \global\expandafter\jfont
-            \csname \curr@fontshape/\f@size\endcsname
-            \noexpand\fontname\jfont
-           \relax}%
-       \aftergroup\subst@correction
-}
-\def\pltx@do@subst@correction@tate{%
-       \xdef\subst@correction{%
-          \font@name
-          \global\expandafter\tfont
-            \csname \curr@fontshape/\f@size\endcsname
-            \noexpand\fontname\tfont
-           \relax}%
-       \aftergroup\subst@correction
-}
-%    \end{macrocode}
-% そして、エンコーディングに応じて3つの命令を使い分けます。
-%    \begin{macrocode}
-\def\do@subst@correction{%
-  \edef\tmp@item{{\f@encoding}}%
-  \expandafter\expandafter\expandafter
-  \inlist@\expandafter\tmp@item\expandafter{\kyenc@list}%
-  \ifin@\pltx@do@subst@correction@yoko
-  \else
-    \expandafter\expandafter\expandafter
-    \inlist@\expandafter\tmp@item\expandafter{\ktenc@list}%
-    \ifin@\pltx@do@subst@correction@tate\else
-      \pltx@do@subst@correction@al
-    \fi
-  \fi
-}
-%</plcore|platexrelease>
-%<platexrelease>\plEndIncludeInRelease
-%<platexrelease>\plIncludeInRelease{0000/00/00}{\do@subst@correction}
-%<platexrelease>                   {LaTeX2e original}%
-%<platexrelease>\def\do@subst@correction{%
-%<platexrelease>       \xdef\subst@correction{%
-%<platexrelease>          \font@name
-%<platexrelease>          \global\expandafter\font
-%<platexrelease>            \csname \curr@fontshape/\f@size\endcsname
-%<platexrelease>            \noexpand\fontname\font
-%<platexrelease>           \relax}%
-%<platexrelease>       \aftergroup\subst@correction
-%<platexrelease>}
-%<platexrelease>\let\pltx@do@subst@correction@al\@undefined
-%<platexrelease>\let\pltx@do@subst@correction@yoko\@undefined
-%<platexrelease>\let\pltx@do@subst@correction@tate\@undefined
-%<platexrelease>\plEndIncludeInRelease
-%<*plcore>
-%    \end{macrocode}
-% \end{macro}
-% \end{macro}
-% \end{macro}
 % \end{macro}
 %
 %
@@ -2054,29 +1936,27 @@
 % patch level~4には |latex3/latex2e#293| のバグがあったため、
 % ^^A    →対策として \series@maybe@drop@one@m が追加された
 % 安定した\LaTeXe{}のみをサポートします。
-% さらに開発版\LaTeXe{}では |latex3/latex2e#291| の対策も施されています。
-% ^^A    →対策として \series@maybe@drop@one@m@x が追加された
 % \changes{v1.6z}{2020/02/28}{\cs{series@maybe@drop@one@m}の存在確認}
-% \changes{v1.7}{2020/02/29}{\cs{series@maybe@drop@one@m@x}の存在確認}
 %    \begin{macrocode}
 %<*plcore|platexrelease>
 \ifx\fontseriesforce\@undefined      % old
 \else                                % 2020-02-02
-  \ifx\series@maybe@drop@one@m\@undefined     % patch level 0--4
+  \ifx\@forced@seriestrue\@undefined % patch level 0, 1, 2
     \@latex@error
       {Please update LaTeX2e!^^J\space\space
-       At least LaTeX2e 2020-02-02 patch level 5 is required}
-      {LaTeX2e 2020-02-02 patch level 2 and 4 has a bug.}
+       At least LaTeX2e 2020-02-02 patch level 3 is required}
+      {LaTeX2e 2020-02-02 patch level 2 has a bug.}
 %<plcore>    \@@end
-  \else
-    \ifx\series@maybe@drop@one@m@x\@undefined % patch level 5
-      % anticipating LaTeX2e 'develop' branch (after 23b7244)
-      % this temporary code will be removed in the future
-      \let\series@maybe@drop@one@m@x\series@maybe@drop@one@m
-      \def\series@maybe@drop@one@m#1{%
-        \expandafter\series@maybe@drop@one@m@x\expandafter{#1}}
-    \fi
   \fi
+  % actually we'd like to check the below too,
+  % but commented out for TL19 frozen since
+  % platex-dev format generation fails
+  %\ifx\series@maybe@drop@one@m\@undefined % patch level 0--4
+  %  \@latex@error
+  %    {Please update LaTeX2e!^^J\space\space
+  %     At least LaTeX2e 2020-02-02 patch level 5 is required}
+  %    {LaTeX2e 2020-02-02 patch level 2 and 4 has a bug.}
+  %\fi
 \fi
 %</plcore|platexrelease>
 %    \end{macrocode}
@@ -2169,14 +2049,17 @@
     \fi
   \fi
 }
+\ifx\series@maybe@drop@one@m\@undefined % patch level 0--4
 \def\set@target@series@kanji#1{%
     \edef\k@series{#1}%
-%x--- for LaTeX2e 2020-02-02 patch level 5
-%x  \expandafter\series@maybe@drop@one@m\expandafter{\k@series}\k@series
-%x--- for LaTeX2e develop
-    \series@maybe@drop@one@m\k@series\k@series
-%x--- for LaTeX2e end
+    \edef\k@series{\expandafter\series@drop@one@m\k@series mm\series@drop@one@m}%
 }
+\else                                   % patch level 5
+\def\set@target@series@kanji#1{%
+    \edef\k@series{#1}%
+    \expandafter\series@maybe@drop@one@m\expandafter{\k@series}\k@series
+}
+\fi
 \fi
 %    \end{macrocode}
 % \end{macro}
@@ -2426,20 +2309,14 @@
 %
 % \begin{macro}{\expand@font@defaults}
 % ファミリのデフォルトを完全展開します。
-% まず、オリジナルの\LaTeX{}の定義（ltfssini.dtx 2020/02/25 v3.1j以降）を
-% 載せておきます。
+% まず、オリジナルの\LaTeX{}の定義を載せておきます。
 %    \begin{macrocode}
 %\def\expand@font@defaults{%
 %  \edef\rmdef@ult{\rmdefault}%
 %  \edef\sfdef@ult{\sfdefault}%
 %  \edef\ttdef@ult{\ttdefault}%
-%x--- for LaTeX2e 2020-02-02 patch level 5
 %  \edef\bfdef@ult{\bfdefault}%
 %  \edef\mddef@ult{\mddefault}%
-%x--- for LaTeX2e develop
-%  \series@maybe@drop@one@m\bfdefault\bfdef@ult
-%  \series@maybe@drop@one@m\mddefault\mddef@ult
-%x--- for LaTeX2e end
 %  \edef\famdef@ult{\familydefault}%
 %}
 %    \end{macrocode}
@@ -2555,12 +2432,7 @@
        \maybe@load@fontshape
 %<+debug> \series@change@debug{Target series:
 %<+debug>                      \f@series \space -> \target@series@value}%
-%x--- for LaTeX2e 2020-02-02 patch level 5
-%x     \let\f@series\target@series@value
-%x--- for LaTeX2e develop
-%      \let\f@series\target@series@value
-       \series@maybe@drop@one@m\target@series@value\f@series
-%x--- for LaTeX2e end
+       \let\f@series\target@series@value
      \fi
    \fi
  \fi
@@ -2591,12 +2463,7 @@
          \maybe@load@fontshape\endgroup
 %<+debug> \series@change@debug{Target series:
 %<+debug>                      \k@series \space -> \target@series@value}%
-%x--- for LaTeX2e 2020-02-02 patch level 5
-%x     \let\k@series\target@series@value
-%x--- for LaTeX2e develop
-%      \let\k@series\target@series@value
-       \series@maybe@drop@one@m\target@series@value\k@series
-%x--- for LaTeX2e end
+       \let\k@series\target@series@value
      \fi
    \fi
  \fi
@@ -2616,23 +2483,10 @@
                       \csname bfseries@\target@meta@family@value\endcsname
 %<+debug>\series@change@debug{Targets for mdseries and bfseries:
 %<+debug>                     \reserved@b\space and \reserved@c}%
-%x--- for LaTeX2e 2020-02-02 patch level 5
-%x    \expandafter\ifx\csname mdseries@#1\endcsname\k@series
-%x--- for LaTeX2e develop
-      \expandafter\series@maybe@drop@one@m
-          \csname mdseries@#1\endcsname\reserved@d
-      \ifx\reserved@d\k@series
-%x--- for LaTeX2e end
+      \expandafter\ifx\csname mdseries@#1\endcsname\k@series
 %<+debug>   \series@change@debug{mdseries@#1 matched -> \reserved@b}%
                                       \let\target@series@value\reserved@b
-%x--- for LaTeX2e 2020-02-02 patch level 5
-%x    \else\expandafter\ifx\csname bfseries@#1\endcsname\k@series
-%x--- for LaTeX2e develop
-      \else
-        \expandafter\series@maybe@drop@one@m
-           \csname bfseries@#1\endcsname\reserved@d
-        \ifx\reserved@d\k@series
-%x--- for LaTeX2e end
+      \else\expandafter\ifx\csname bfseries@#1\endcsname\k@series
 %<+debug>  \series@change@debug{bfseries@#1 matched -> \reserved@c}%
                                       \let\target@series@value\reserved@c
       \else\ifx\k@series\mddef@ult    \let\target@series@value\reserved@b
