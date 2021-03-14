@@ -1,3 +1,9 @@
+このドキュメントは ASCII のオリジナルのものをそのまま収録するものですが、
+CTAN の URL のみ、CTAN からのリクエストに従い修正しました。
+
+2016-04-17
+Japanese TeX Development Community
+
 ===========================================================================
                          pLaTeX2e <2006/01/04>
 
@@ -34,16 +40,9 @@ pLaTeX2e をインストールするには、pTeX と LaTeX2e のファイルが
     * ftp://bash.cc.keio.ac.jp/pub/TeX/ascii-ptex/
     * ftp://ftp.ring.gr.jp/pub/text/TeX/ascii-ptex/
 
-LaTeX2e は、CTAN サイトの macros/latex/base ディレクトリから入手するこ
-とができます。主な CTAN サイトはつぎのとおりです。
+LaTeX2e は、CTAN サイトから入手することができます。
 
-    * ftp://ftp.ring.gr.jp/pub/text/CTAN/
-    * ftp://ftp.u-aizu.ac.jp/pub/tex/CTAN/
-    * ftp://ftp.riken.go.jp/pub/tex-archive/
-    * ftp://lab.kdd.co.jp/TeX/CTAN/
-    * ftp://ftp.shsu.edu/tex-archive/
-    * ftp://ftp.dante.de/tex-archive/
-    * ftp://ftp.tex.ac.uk/tex-archive/
+    * http://www.ctan.org/pkg/latex-base
 
 LaTeX2e では、デフォルトで EC エンコードのフォントが用いられています。
 EC エンコードのフォントは、CTAN サイトの fonts/ec ディレクトリにあります。
