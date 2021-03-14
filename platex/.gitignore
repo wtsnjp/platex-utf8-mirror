@@ -147,8 +147,7 @@ pythontex-files-*/
 # xypic precompiled matrices
 *.xyc
 
-# WinEdt, Emacs
-*~
+# WinEdt
 *.bak
 *.sav
 
@@ -158,6 +157,3 @@ pythontex-files-*/
 
 # Latexian
 TSWLatexianTemp*
-
-# tests
-tests/*.pdf
