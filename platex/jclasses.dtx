@@ -78,8 +78,6 @@
 % \changes{v1.7b}{2016/11/22}{補足ドキュメントを追加}
 % \changes{v1.7c}{2016/12/18}{Only add empty page after part if
 %    twoside and openright (sync with classes.dtx v1.4b)}
-% \changes{v1.7c}{2016/12/18}{奇妙なarticleガードとコードを削除して
-%    ドキュメントを追加}
 % \fi
 %
 % \iffalse
@@ -197,11 +195,23 @@
 % \end{macro}
 %
 % \begin{macro}{\if@openright}
-% chapterレベルを奇数ページからはじめるかどうかのスイッチです。
+% chapterレベルを右ページからはじめるかどうかのスイッチです。
+% 横組では奇数ページ、縦組では偶数ページから始まることになります。
 % reportクラスのデフォルトは、``no''です。
 % bookクラスのデフォルトは、``yes''です。
 %    \begin{macrocode}
 %<!article>\newif\if@openright
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\if@openleft}
+% chapterレベルを左ページからはじめるかどうかのスイッチです。
+% 日本語\TeX{}開発コミュニティ版で新たに追加されました。
+% 横組では偶数ページ、縦組では奇数ページから始まることになります。
+% reportクラスとbookクラスの両方で、デフォルトは``no''です。
+% \changes{v1.7d}{????/??/??}{\cs{if@openleft}スイッチ追加}
+%    \begin{macrocode}
+%<!article>\newif\if@openleft
 %    \end{macrocode}
 % \end{macro}
 %
@@ -393,12 +403,15 @@
 % \subsection{右左起こしオプション}
 % chapterを右ページあるいは左ページから
 % はじめるかどうかを指定するオプションです。
+% |openleft|オプションは日本語\TeX{}開発コミュニティによって追加されました。
+% \changes{v1.7d}{????/??/??}{openleftオプション追加}
 %    \begin{macrocode}
 %<!article>\if@compatibility
 %<book>\@openrighttrue
 %<!article>\else
-%<!article>\DeclareOption{openright}{\@openrighttrue}
-%<!article>\DeclareOption{openany}{\@openrightfalse}
+%<!article>\DeclareOption{openright}{\@openrighttrue\@openleftfalse}
+%<!article>\DeclareOption{openleft}{\@openlefttrue\@openrightfalse}
+%<!article>\DeclareOption{openany}{\@openrightfalse\@openleftfalse}
 %<!article>\fi
 %    \end{macrocode}
 %
@@ -1609,6 +1622,89 @@
 % \end{macro}
 %
 %
+% \section{改ページ（日本語\TeX{}開発コミュニティ版のみ）}\label{sec:cleardoublepage}
+%
+% \begin{macro}{\pltx@cleartorightpage}
+% \begin{macro}{\pltx@cleartoleftpage}
+% \begin{macro}{\pltx@cleartooddpage}
+% \begin{macro}{\pltx@cleartoevenpage}
+% |\cleardoublepage|命令は、\LaTeX{}カーネルでは「奇数ページになるまでページを
+% 繰る命令」として定義されています。しかしp\LaTeX{}カーネルでは、アスキーの方針
+% により「横組では奇数ページになるまで、縦組では偶数ページになるまでページを
+% 繰る命令」に再定義されています。すなわち、p\LaTeX{}では縦組でも横組でも
+% 右ページになるまでページを繰ることになります。
+%
+% p\LaTeX{}標準クラスのbookは、横組も縦組も|openright|がデフォルトになっていて、
+% これは従来p\LaTeX{}カーネルで定義された|\cleardoublepage|を利用していました。
+% しかし、縦組で奇数ページ始まりの文書を作りたい場合もあるでしょうから、
+% コミュニティ版クラスでは以下の命令を追加します。
+% \begin{enumerate}
+%   \item|\pltx@cleartorightpage|：右ページになるまでページを繰る命令
+%   \item|\pltx@cleartoleftpage|：左ページになるまでページを繰る命令
+%   \item|\pltx@cleartooddpage|：奇数ページになるまでページを繰る命令
+%   \item|\pltx@cleartoevenpage|：偶数ページになるまでページを繰る命令
+% \end{enumerate}
+% また、コミュニティ版クラスの内部では、p\LaTeX{}カーネルの|\cleardoublepage|の
+% 代わりに上記の命令を使って|openright|および|openleft|オプションを実装します。
+% \changes{v1.7d}{????/??/??}{\cs{cleardoublepage}の代用となる命令群を追加}
+%    \begin{macrocode}
+\def\pltx@cleartorightpage{\clearpage\if@twoside
+  \ifodd\c@page
+    \iftdir
+      \hbox{}\thispagestyle{empty}\newpage
+      \if@twocolumn\hbox{}\newpage\fi
+    \fi
+  \else
+    \ifydir
+      \hbox{}\thispagestyle{empty}\newpage
+      \if@twocolumn\hbox{}\newpage\fi
+    \fi
+  \fi\fi}
+\def\pltx@cleartoleftpage{\clearpage\if@twoside
+  \ifodd\c@page
+    \ifydir
+      \hbox{}\thispagestyle{empty}\newpage
+      \if@twocolumn\hbox{}\newpage\fi
+    \fi
+  \else
+    \iftdir
+      \hbox{}\thispagestyle{empty}\newpage
+      \if@twocolumn\hbox{}\newpage\fi
+    \fi
+  \fi\fi}
+\def\pltx@cleartooddpage{\clearpage\if@twoside
+  \ifodd\c@page\else
+    \hbox{}\newpage
+    \if@twocolumn\hbox{}\newpage\fi
+  \fi\fi}
+\def\pltx@cleartoevenpage{\clearpage\if@twoside
+  \ifodd\c@page
+    \hbox{}\newpage
+    \if@twocolumn\hbox{}\newpage\fi
+  \fi\fi}
+%    \end{macrocode}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+% \end{macro}
+%
+% \begin{macro}{\cleardoublepage}
+% そしてreportとbookクラスの場合は、ユーザ向け命令である|\cleardoublepage|を、
+% |openright|オプションが指定されている場合は|\pltx@cleartorightpage|に、
+% |openelft|オプションが指定されている場合は|\pltx@cleartoleftpage|に、
+% それぞれ|\let|します。|openany|の場合はp\LaTeX{}カーネルの定義のままです。
+%    \begin{macrocode}
+%<*!article>
+\if@openleft
+  \let\cleardoublepage\pltx@cleartoleftpage
+\else\if@openright
+  \let\cleardoublepage\pltx@cleartorightpage
+\fi\fi
+%</!article>
+%    \end{macrocode}
+% \end{macro}
+%
+%
 %
 % \section{ページスタイル}\label{sec:pagestyle}
 % p\LaTeXe{}では、つぎの6種類のページスタイルを使用できます。
@@ -1920,7 +2016,7 @@
 %
 % \section{文書コマンド}
 %
-% \subsection{表題}
+% \subsubsection{表題}
 %
 % \begin{macro}{\title}
 % \begin{macro}{\author}
@@ -1949,6 +2045,24 @@
 % 右起こしページ用のページパラメータでは誤った結果になります。
 % 二段組スタイルでも一段組のページが作られます。
 %
+% \emph{日本語\TeX{}開発コミュニティによる変更}：
+% 上にあるのはアスキー版の説明です。この説明およびアスキー版の実際のコードは、
+% 横組に関しては妥当でしたが、縦組に関しては正しいとはいえませんでした。
+% 本来ならば
+% \begin{itemize}
+% \item 奇数ページ起こしの場合、すなわち横組の右起こしと縦組の左起こしでは
+%       ページ番号を1（奇数）にリセット
+% \item 偶数ページ起こしの場合、すなわち縦組の右起こしと横組の左起こしでは
+%       ページ番号を0（偶数）にリセット
+% \end{itemize}
+% とすべきです。そこで、コミュニティ版クラスではタイトルページのページ番号が
+% 奇数の場合は1に、偶数の場合は0にリセットするようにしました。
+% p\LaTeX~2.09互換モードはアスキー版のまま、すなわち「ページ番号をゼロに設定」
+% としてあります。これは、横組の右起こしの挙動としては誤りですが、縦組の
+% 右起こしの挙動としては正しくなっているといえます。
+% \changes{v1.7d}{????/??/??}{titlepageのページ番号を奇数ならば1に、
+%   偶数ならば0にリセットするように変更}
+%
 % 最初に互換モードの定義を作ります。
 %    \begin{macrocode}
 \if@compatibility
@@ -1976,7 +2090,7 @@
         \@restonecolfalse\newpage
       \fi
       \thispagestyle{empty}%
-      \setcounter{page}\@ne
+      \ifodd\c@page\setcounter{page}\@ne\else\setcounter{page}\z@\fi
     }%
     {\if@restonecol\twocolumn \else \newpage \fi
 %    \end{macrocode}
@@ -2001,10 +2115,14 @@
 % 縦組のときは、|\thanks|コマンドを|\p@thanks|に|\let|します。
 % このコマンドは|\footnotetext|を使わず、直接、文字を|\@thanks|に格納
 % していきます。
+%
+% 著者名の脇に表示される合印は直立した数字、注釈側は横に寝た数字となっていまし
+% たが、不自然なので|\hbox{\yoko ...}|を追加し、両方とも直立するようにしました。
+% \changes{v1.7d}{????/??/??}{縦組クラスの所属表示の番号を直立にした}
 %    \begin{macrocode}
 \def\p@thanks#1{\footnotemark
   \protected@xdef\@thanks{\@thanks
-    \protect{\noindent$\m@th^\thefootnote$~#1\protect\par}}}
+    \protect{\noindent\hbox{\yoko$\m@th^\thefootnote$}#1\protect\par}}}
 %    \end{macrocode}
 % \end{macro}
 %
@@ -2130,7 +2248,7 @@
 %    \end{macrocode}
 % \end{macro}
 %
-% \subsection{概要}
+% \subsubsection{概要}
 %
 % \begin{environment}{abstract}
 % 要約文のための環境です。bookクラスでは使えません。
@@ -2167,7 +2285,7 @@
 %
 % \subsection{章見出し}
 %
-% \subsubsection{マークコマンド}
+% \subsection{マークコマンド}
 %
 % \begin{macro}{\chaptermark}
 % \begin{macro}{\sectionmark}
@@ -2343,13 +2461,16 @@
 %    \begin{macrocode}
 %<*book>
 \newcommand{\frontmatter}{%
-  \if@openright \cleardoublepage \else \clearpage \fi
+  \if@openleft \cleardoublepage \else
+  \if@openright \cleardoublepage \else \clearpage \fi \fi
   \@mainmatterfalse\pagenumbering{roman}}
 \newcommand{\mainmatter}{%
-  \if@openright \cleardoublepage \else \clearpage \fi
+  \if@openleft \cleardoublepage \else
+  \if@openright \cleardoublepage \else \clearpage \fi \fi
   \@mainmattertrue\pagenumbering{arabic}}
 \newcommand{\backmatter}{%
-  \if@openright \cleardoublepage \else \clearpage \fi
+  \if@openleft \cleardoublepage \else
+  \if@openright \cleardoublepage \else \clearpage \fi \fi
   \@mainmatterfalse}
 %</book>
 %    \end{macrocode}
@@ -2441,7 +2562,8 @@
 %    \begin{macrocode}
 %<*report|book>
 \newcommand{\part}{%
-  \if@openright \cleardoublepage \else \clearpage \fi
+  \if@openleft \cleardoublepage \else
+  \if@openright \cleardoublepage \else \clearpage \fi \fi
   \thispagestyle{empty}%
   \if@twocolumn\onecolumn\@tempswatrue\else\@tempswafalse\fi
   \null\vfil
@@ -2545,9 +2667,11 @@
 %<*report|book>
 \def\@endpart{\vfil\newpage
   \if@twoside
-   \if@openright %% added (2016/12/18)
+   \if@openleft %% \if@openleft added (????/??/??)
     \null\thispagestyle{empty}\newpage
-   \fi %% added (2016/12/18)
+   \else\if@openright %% \if@openright added (2016/12/18)
+    \null\thispagestyle{empty}\newpage
+   \fi\fi %% added (2016/12/18, ????/??/??)
   \fi
 %    \end{macrocode}
 % 二段組文書のとき、スイッチを二段組モードに戻す必要があります。
@@ -2567,6 +2691,10 @@
 % なお、縦組の場合でも右ページからはじまるように、
 % フォーマットファイルで|\clerdoublepage|が定義されています。
 %
+% \emph{日本語\TeX{}開発コミュニティによる補足}：コミュニティ版の実装では、
+% |openright|と|openleft|の場合に|\cleardoublepage|をクラスファイルの中で
+% 再々定義しています。\ref{sec:cleardoublepage}を参照してください。
+%
 % 章見出しが出力されるページのスタイルは、\pstyle{jpl@in}になります。
 % \pstyle{jpl@in}は、\pstyle{headnomble}か\pstyle{footnomble}のいずれかです。
 % 詳細は、第\ref{sec:pagestyle}節を参照してください。
@@ -2576,7 +2704,8 @@
 %    \begin{macrocode}
 %<*report|book>
 \newcommand{\chapter}{%
-  \if@openright\cleardoublepage\else\clearpage\fi
+  \if@openleft \cleardoublepage \else
+  \if@openright \cleardoublepage \else \clearpage \fi \fi
   \thispagestyle{jpl@in}%
   \global\@topnum\z@
   \@afterindenttrue
@@ -2588,12 +2717,6 @@
 % このマクロは、章見出しに番号を付けるときに呼び出されます。
 % \Lcount{secnumdepth}が$-1$よりも大きく、
 % |\@mainmatter|が真（bookクラスの場合）のときに、番号を出力します。
-%
-% \emph{日本語\TeX{}開発コミュニティによる補足}：本家\LaTeX{}の
-% \file{classes}では、二段組のときチャプタータイトルは一段組に戻され
-% ますが、アスキーによる\file{jclasses}では二段組のままにされています。
-% したがって、チャプタータイトルより高い位置に右カラムの始点が来るという
-% 挙動になっていますが、コミュニティ版でもアスキー版の挙動を維持しています。
 %    \begin{macrocode}
 \def\@chapter[#1]#2{%
   \ifnum \c@secnumdepth >\m@ne
@@ -2644,14 +2767,11 @@
 %
 % \begin{macro}{\@schapter}
 % このマクロは、章見出しに番号を付けないときに呼び出されます。
-%
-% \emph{日本語\TeX{}開発コミュニティによる補足}：やはり二段組でチャプター
-% タイトルより高い位置に右カラムの始点が来るという挙動を維持してあります。
-% \changes{v1.7c}{2016/12/18}{奇妙なarticleガードとコードを削除して
-%    ドキュメントを追加}
 %    \begin{macrocode}
 \def\@schapter#1{%
+%<article>  \if@twocolumn\@topnewpage[\@makeschapterhead{#1}]\else
   \@makeschapterhead{#1}\@afterheading
+%<article>  \fi
 }
 %    \end{macrocode}
 % \end{macro}
