@@ -72,6 +72,9 @@ main() {
   cd $ORIGINAL_DIR
   git checkout $ORIGINAL_BRANCH > /dev/null 2> /dev/null
   git rev-parse HEAD > $REPO_TOP/latest.txt
+
+  cd $REPO_TOP
+  git push
 }
 
 # execute
