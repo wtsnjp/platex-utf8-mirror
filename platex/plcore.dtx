@@ -70,16 +70,15 @@
 % \changes{v1.2p}{2017/07/21}{tabular環境のセル内のJFMグル―を削除}
 % \changes{v1.2q}{2017/08/25}{\cs{nolinebreak}の場合に\cs{(x)kanjiskip}が
 %    入らなくなっていたのを修正}
-% \changes{v1.2r}{2017/09/24}{相互参照のスペースファクターを補正}
-% \changes{v1.2r}{2017/09/24}{\cs{verb}の冒頭の半角空白を保持}
-% \changes{v1.2r}{2017/09/24}{tabbing環境の行冒頭のJFMグル―を削除}
+% \changes{v1.2r}{2017/09/26}{tabular環境の右揃え(r)で罫線がずれるように
+%    なっていたバグを修正}
 % \fi
 %
 % \iffalse
 %<*driver>
 \NeedsTeXFormat{pLaTeX2e}
 % \fi
-\ProvidesFile{plcore.dtx}[2017/09/24 v1.2r pLaTeX core file]
+\ProvidesFile{plcore.dtx}[2017/09/26 v1.2r pLaTeX core file]
 % \iffalse
 \documentclass{jltxdoc}
 \GetFileInfo{plcore.dtx}
@@ -1377,16 +1376,9 @@
 % そこで、|\relax|のあとに|{}|を追加しました。従来も|\protect\ref|のように使えば
 % 問題ありませんでしたが、\LaTeX{}では展開されても問題が起きないrobustな実装に
 % なっていますので、これに従います。
-%
-% さらに、例えば``see Appendix A.''のような記述が文末にあり、かつ
-% ``A''を相互参照で取得した場合のスペースファクターを補正するため、
-% |\spacefactor\@m{}|に修正しました。これで、``A.''の後のスペースが
-% 文末として扱われます。
-% （参考：\LaTeXe{}マクロ\&クラス プログラミング実践解説）
-% \changes{v1.2r}{2017/09/24}{相互参照のスペースファクターを補正}
 %    \begin{macrocode}
 %</plcore>
-%<platexrelease>\plIncludeInRelease{2017/10/14}{\@setref}
+%<platexrelease>\plIncludeInRelease{2017/04/08}{\@setref}
 %<platexrelease>                   {Spacing after \ref in moving arguments}%
 %<*plcore|platexrelease>
 \def\@setref#1#2#3{%
@@ -1396,21 +1388,9 @@
     \@latex@warning{Reference `#3' on page \thepage \space
               undefined}%
   \else
-    \expandafter#2#1\spacefactor\@m{}% change \null to \spacefactor\@m{}
+    \expandafter#2#1\relax{}% change \null to \relax{}
   \fi}
 %</plcore|platexrelease>
-%<platexrelease>\plEndIncludeInRelease
-%<platexrelease>\plIncludeInRelease{2017/04/08}{\@setref}
-%<platexrelease>                   {Spacing after \ref in moving arguments}%
-%<platexrelease>\def\@setref#1#2#3{%
-%<platexrelease>  \ifx#1\relax
-%<platexrelease>    \protect\G@refundefinedtrue
-%<platexrelease>    \nfss@text{\reset@font\bfseries ??}%
-%<platexrelease>    \@latex@warning{Reference `#3' on page \thepage \space
-%<platexrelease>              undefined}%
-%<platexrelease>  \else
-%<platexrelease>    \expandafter#2#1\relax{}% change \null to \relax{}
-%<platexrelease>  \fi}
 %<platexrelease>\plEndIncludeInRelease
 %<platexrelease>\plIncludeInRelease{0000/00/00}{\@setref}
 %<platexrelease>                   {Spacing after \ref in moving arguments}%
@@ -1439,25 +1419,15 @@
 % |\leavevmode|で水平モードに入ったあと、|\null|を出力しています。
 % マクロ|\null|は|\hbox{}|として定義されていますので、
 % ここには和欧文間スペース（|\xkanjiskip|）が入りません。
-%
-% しかし、単に|\null|を除いてしまうと、今度は|\verb+ abc+|のように
-% |\verb|の冒頭に半角空白がある場合にこれが消えてしまいます(TeX.SX 170245)。
-% そこで、p\LaTeX{}では|\null|の代わりに
-% \begin{enumerate}
-%   \item 和欧文間スペースの挿入処理は透過する
-%   \item 行分割時に消える(discardable)ノードではない
-% \end{enumerate}
-% の両条件を満たすノードを挿入します。ここでは|\vadjust{}|としました。
-%
+% そこで、|\null|を出力しないようマクロを修正します。
 % このマクロは、\file{ltmiscen.dtx}で定義されています。
-% \changes{v1.2r}{2017/09/24}{\cs{verb}の冒頭の半角空白を保持}
 %    \begin{macrocode}
 %</plcore>
-%<platexrelease>\plIncludeInRelease{2017/10/14}{\verb}
-%<platexrelease>                   {Preserve beginning space characters}%
+%<platexrelease>\plIncludeInRelease{2017/04/08}{\verb}
+%<platexrelease>                   {Disable hyphenation in verb}%
 %<*plcore|platexrelease>
 \if@compatibility\else
-\def\verb{\relax\ifmmode\hbox\else\leavevmode\vadjust{}\fi
+\def\verb{\relax\ifmmode\hbox\else\leavevmode\fi
   \bgroup
     \verb@eol@error \let\do\@makeother \dospecials
     \verbatim@font\@noligs
@@ -1471,17 +1441,6 @@
     \@ifstar\@sverb\@verb}
 \fi
 %</plcore|platexrelease>
-%<platexrelease>\plEndIncludeInRelease
-%<platexrelease>\plIncludeInRelease{2017/04/08}{\verb}
-%<platexrelease>                   {Disable hyphenation in verb}%
-%<platexrelease>\if@compatibility\else
-%<platexrelease>\def\verb{\relax\ifmmode\hbox\else\leavevmode\fi
-%<platexrelease>  \bgroup
-%<platexrelease>    \verb@eol@error \let\do\@makeother \dospecials
-%<platexrelease>    \verbatim@font\@noligs
-%<platexrelease>    \language\l@nohyphenation
-%<platexrelease>    \@ifstar\@sverb\@verb}
-%<platexrelease>\fi
 %<platexrelease>\plEndIncludeInRelease
 %<platexrelease>\plIncludeInRelease{0000/00/00}{\verb}
 %<platexrelease>                   {Disable hyphenation in verb}%
@@ -1499,44 +1458,6 @@
 %
 %
 % \subsection{tabbing環境}
-%
-% \begin{macro}{\@startline}
-% tabbing環境の行で、中身が始め括弧類などで始まる場合、
-% 最初の項目だけJFMグルーが消えない現象に対処します。
-% \changes{v1.2r}{2017/09/24}{tabbing環境の行冒頭のJFMグル―を削除}
-%    \begin{macrocode}
-%</plcore>
-%<platexrelease>\plIncludeInRelease{2017/10/14}{\@startline}
-%<platexrelease>                   {Inhibit JFM glue at the beginning}%
-%<*plcore|platexrelease>
-\gdef\@startline{%
-     \ifnum \@nxttabmar >\@hightab
-       \@badtab
-       \global\@nxttabmar \@hightab
-     \fi
-     \global\@curtabmar \@nxttabmar
-     \global\@curtab \@curtabmar
-     \global\setbox\@curline \hbox {}%
-     \@startfield
-     \strut\inhibitglue}
-%</plcore|platexrelease>
-%<platexrelease>\plEndIncludeInRelease
-%<platexrelease>\plIncludeInRelease{0000/00/00}{\@startline}
-%<platexrelease>                   {Inhibit JFM glue at the beginning}%
-%<platexrelease>\gdef\@startline{%
-%<platexrelease>     \ifnum \@nxttabmar >\@hightab
-%<platexrelease>       \@badtab
-%<platexrelease>       \global\@nxttabmar \@hightab
-%<platexrelease>     \fi
-%<platexrelease>     \global\@curtabmar \@nxttabmar
-%<platexrelease>     \global\@curtab \@curtabmar
-%<platexrelease>     \global\setbox\@curline \hbox {}%
-%<platexrelease>     \@startfield
-%<platexrelease>     \strut}
-%<platexrelease>\plEndIncludeInRelease
-%<*plcore>
-%    \end{macrocode}
-% \end{macro}
 %
 % \begin{macro}{\@stopfield}
 % \changes{v1.1d}{1996/03/12}{\cs{=}の後ろに和欧文間スペースが入るのを修正}
@@ -1592,12 +1513,13 @@
 % しまうので、p\LaTeX{}では追加の対処を入れます。
 %
 % まず、|l|, |c|, |r|の場合です。
-% 最初に|\inhibitglue|を発行し、最後に余分な|\unskip|を発行する
-% ことで、セル要素の周囲のJFMグル―を消します。
+% セルの要素を|\mbox|に入れ、その最初で|\inhibitglue|を発行します。
 % \changes{v1.2p}{2017/07/21}{tabular環境のセル内のJFMグル―を削除}
+% \changes{v1.2r}{2017/09/26}{tabular環境の右揃え(r)で罫線がずれるように
+%    なっていたバグを修正}
 %    \begin{macrocode}
 %</plcore>
-%<platexrelease>\plIncludeInRelease{2017/07/29}{\@tabclassz}
+%<platexrelease>\plIncludeInRelease{2017/09/26}{\@tabclassz}
 %<platexrelease>                   {Inhibit JFM glue in tabular cells}%
 %<*plcore|platexrelease>
 \def\@tabclassz{%
@@ -1617,13 +1539,39 @@
   \edef\@preamble{%
     \@preamble{%
       \ifcase\@chnum
-        \hfil\inhibitglue\ignorespaces\@sharp\unskip\unskip\hfil % c
+        \hfil\mbox{\inhibitglue\ignorespaces\@sharp\unskip}\hfil % c
       \or
-        \hskip1sp\inhibitglue\ignorespaces\@sharp\unskip\unskip\hfil % l
+        \hskip1sp\mbox{\inhibitglue\ignorespaces\@sharp\unskip}\hfil % l
       \or
-        \hfil\hskip1sp\inhibitglue\ignorespaces\@sharp\unskip\unskip % r
+        \hfil\hskip1sp\mbox{\inhibitglue\ignorespaces\@sharp\unskip}% % r
       \fi}}}
 %</plcore|platexrelease>
+%<platexrelease>\plEndIncludeInRelease
+%<platexrelease>\plIncludeInRelease{2017/07/29}{\@tabclassz}
+%<platexrelease>                   {Inhibit JFM glue in tabular cells}%
+%<platexrelease>\def\@tabclassz{%
+%<platexrelease>  \ifcase\@lastchclass
+%<platexrelease>    \@acolampacol
+%<platexrelease>  \or
+%<platexrelease>    \@ampacol
+%<platexrelease>  \or
+%<platexrelease>  \or
+%<platexrelease>  \or
+%<platexrelease>    \@addamp
+%<platexrelease>  \or
+%<platexrelease>    \@acolampacol
+%<platexrelease>  \or
+%<platexrelease>    \@firstampfalse\@acol
+%<platexrelease>  \fi
+%<platexrelease>  \edef\@preamble{%
+%<platexrelease>    \@preamble{%
+%<platexrelease>      \ifcase\@chnum
+%<platexrelease>        \hfil\inhibitglue\ignorespaces\@sharp\unskip\unskip\hfil % c
+%<platexrelease>      \or
+%<platexrelease>        \hskip1sp\inhibitglue\ignorespaces\@sharp\unskip\unskip\hfil % l
+%<platexrelease>      \or
+%<platexrelease>        \hfil\hskip1sp\inhibitglue\ignorespaces\@sharp\unskip\unskip % r
+%<platexrelease>      \fi}}}
 %<platexrelease>\plEndIncludeInRelease
 %<platexrelease>\plIncludeInRelease{0000/00/00}{\@tabclassz}
 %<platexrelease>                   {Inhibit JFM glue in tabular cells}%

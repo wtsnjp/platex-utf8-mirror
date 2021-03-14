@@ -18,7 +18,7 @@
 \edef\p@known@latexreleaseversion
    {2017/04/15}
 \edef\platexreleaseversion
-   {2017/10/14}
+   {2017/09/26}
 \def\plIncludeInRelease#1{\kernel@ifnextchar[%
   {\@plIncludeInRelease{#1}}
   {\@plIncludeInRelease{#1}[#1]}}
@@ -44,7 +44,7 @@
 %% File: platexrelease.dtx
 \NeedsTeXFormat{pLaTeX2e}
 \ProvidesPackage{platexrelease}
-                [2016/09/08 v1.0g latexrelease support for pLaTeX Kernel]
+                [2017/09/26 v1.0h latexrelease support for pLaTeX Kernel]
 \RequirePackageWithOptions{latexrelease}
 \ifnum\expandafter\@parse@version\latexreleaseversion//00\@nil
   >\expandafter\@parse@version\p@known@latexreleaseversion//00\@nil
@@ -100,6 +100,15 @@ of this package available from CTAN}
 \fi
 \let\pfmtversion\requestedplpatchdate
 \let\currentpLaTeXdate\requestedpLaTeXdate
+\plIncludeInRelease{2017/09/26}{\PackageWarning}{pLaTeX Info}%
+\plEndIncludeInRelease
+\plIncludeInRelease{2016/07/29}{\PackageWarning}{pLaTeX Info}%
+  \PackageWarningNoLine{platexrelease}{%
+      You selected pLaTeX2e <\pfmtversion>, but\MessageBreak
+      this version of pLaTeX2e is known to have\MessageBreak
+      some critical bugs. We advise you to\MessageBreak
+      select another format date}
+\plEndIncludeInRelease
 \plIncludeInRelease{2016/09/08}{\PackageWarning}{pLaTeX Info}%
 \plEndIncludeInRelease
 \plIncludeInRelease{2016/09/03}{\PackageWarning}{pLaTeX Info}%
@@ -416,52 +425,6 @@ of this package available from CTAN}
    \fi
    #1}
 \plEndIncludeInRelease
-\plIncludeInRelease{2017/10/14}{\check@nocorr@}
-                   {Italic correction before \textt...}%
-\def \check@nocorr@ #1#2\nocorr#3\@nil {%
-  \let \check@icl \maybe@ic
-  \def \check@icr {\ifvmode \else \aftergroup \maybe@ic \fi}%
-  \def \reserved@a {\nocorr}%
-  \def \reserved@b {#1}%
-  \def \reserved@c {#3}%
-  \ifx \reserved@a \reserved@b
-    \ifx \reserved@c \@empty
-      \let \check@icl \@empty
-    \else
-      \let \check@icl \@empty
-      \let \check@icr \@empty
-    \fi
-  \else
-    \ifx \reserved@c \@empty
-    \else
-      \let \check@icr \@empty
-    \fi
-  \fi
-}
-\plEndIncludeInRelease
-\plIncludeInRelease{0000/00/00}{\check@nocorr@}
-                   {Italic correction before \textt...}%
-\def \check@nocorr@ #1#2\nocorr#3\@nil {%
-  \let \check@icl \relax % changed from \maybe@ic
-  \def \check@icr {\ifvmode \else \aftergroup \maybe@ic \fi}%
-  \def \reserved@a {\nocorr}%
-  \def \reserved@b {#1}%
-  \def \reserved@c {#3}%
-  \ifx \reserved@a \reserved@b
-    \ifx \reserved@c \@empty
-      \let \check@icl \@empty
-    \else
-      \let \check@icl \@empty
-      \let \check@icr \@empty
-    \fi
-  \else
-    \ifx \reserved@c \@empty
-    \else
-      \let \check@icr \@empty
-    \fi
-  \fi
-}
-\plEndIncludeInRelease
 \plIncludeInRelease{2016/04/17}{\eminnershape}{\eminnershape}%
 \DeclareRobustCommand\em
         {\@nomath\em \ifdim \fontdimen\@ne\font >\z@
@@ -479,18 +442,6 @@ of this package available from CTAN}
         {\@nomath\em \ifdim \fontdimen\@ne\font >\z@
                        \mcfamily \upshape \else \gtfamily \itshape \fi}
 \let\eminnershape\@undefined
-\plEndIncludeInRelease
-\plIncludeInRelease{2017/10/14}{\<}
-                   {\inhibitglue in vertical mode}%
-\ifx\protected\@undefined
-\def\<{\inhibitglue}
-\else
-\protected\def\<{\ifvmode\leavevmode\fi\inhibitglue}
-\fi
-\plEndIncludeInRelease
-\plIncludeInRelease{0000/00/00}{\<}
-                   {\inhibitglue in vertical mode}%
-\def\<{\inhibitglue}
 \plEndIncludeInRelease
 %% File: plcore.dtx
 \plIncludeInRelease{2017/07/29}{\@no@lnbk}
@@ -985,18 +936,6 @@ of this package available from CTAN}
         \rule\z@\footnotesep\ignorespaces#1\@finalstrut\strutbox}%
     \color@endgroup}}
 \plEndIncludeInRelease
-\plIncludeInRelease{2017/10/14}{\@setref}
-                   {Spacing after \ref in moving arguments}%
-\def\@setref#1#2#3{%
-  \ifx#1\relax
-    \protect\G@refundefinedtrue
-    \nfss@text{\reset@font\bfseries ??}%
-    \@latex@warning{Reference `#3' on page \thepage \space
-              undefined}%
-  \else
-    \expandafter#2#1\spacefactor\@m{}% change \null to \spacefactor\@m{}
-  \fi}
-\plEndIncludeInRelease
 \plIncludeInRelease{2017/04/08}{\@setref}
                    {Spacing after \ref in moving arguments}%
 \def\@setref#1#2#3{%
@@ -1021,17 +960,6 @@ of this package available from CTAN}
     \expandafter#2#1\relax% change \null to \relax
   \fi}
 \plEndIncludeInRelease
-\plIncludeInRelease{2017/10/14}{\verb}
-                   {Preserve beginning space characters}%
-\if@compatibility\else
-\def\verb{\relax\ifmmode\hbox\else\leavevmode\vadjust{}\fi
-  \bgroup
-    \verb@eol@error \let\do\@makeother \dospecials
-    \verbatim@font\@noligs
-    \language\l@nohyphenation
-    \@ifstar\@sverb\@verb}
-\fi
-\plEndIncludeInRelease
 \plIncludeInRelease{2017/04/08}{\verb}
                    {Disable hyphenation in verb}%
 \if@compatibility\else
@@ -1053,31 +981,31 @@ of this package available from CTAN}
     \@ifstar\@sverb\@verb}
 \fi
 \plEndIncludeInRelease
-\plIncludeInRelease{2017/10/14}{\@startline}
-                   {Inhibit JFM glue at the beginning}%
-\gdef\@startline{%
-     \ifnum \@nxttabmar >\@hightab
-       \@badtab
-       \global\@nxttabmar \@hightab
-     \fi
-     \global\@curtabmar \@nxttabmar
-     \global\@curtab \@curtabmar
-     \global\setbox\@curline \hbox {}%
-     \@startfield
-     \strut\inhibitglue}
-\plEndIncludeInRelease
-\plIncludeInRelease{0000/00/00}{\@startline}
-                   {Inhibit JFM glue at the beginning}%
-\gdef\@startline{%
-     \ifnum \@nxttabmar >\@hightab
-       \@badtab
-       \global\@nxttabmar \@hightab
-     \fi
-     \global\@curtabmar \@nxttabmar
-     \global\@curtab \@curtabmar
-     \global\setbox\@curline \hbox {}%
-     \@startfield
-     \strut}
+\plIncludeInRelease{2017/09/26}{\@tabclassz}
+                   {Inhibit JFM glue in tabular cells}%
+\def\@tabclassz{%
+  \ifcase\@lastchclass
+    \@acolampacol
+  \or
+    \@ampacol
+  \or
+  \or
+  \or
+    \@addamp
+  \or
+    \@acolampacol
+  \or
+    \@firstampfalse\@acol
+  \fi
+  \edef\@preamble{%
+    \@preamble{%
+      \ifcase\@chnum
+        \hfil\mbox{\inhibitglue\ignorespaces\@sharp\unskip}\hfil % c
+      \or
+        \hskip1sp\mbox{\inhibitglue\ignorespaces\@sharp\unskip}\hfil % l
+      \or
+        \hfil\hskip1sp\mbox{\inhibitglue\ignorespaces\@sharp\unskip}% % r
+      \fi}}}
 \plEndIncludeInRelease
 \plIncludeInRelease{2017/07/29}{\@tabclassz}
                    {Inhibit JFM glue in tabular cells}%

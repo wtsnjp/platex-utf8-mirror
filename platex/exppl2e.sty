@@ -362,9 +362,9 @@
 % |\spacefactor\@m{}|に修正しました。これで、``A.''の後のスペースが
 % 文末として扱われます。
 % （参考：\LaTeXe{}マクロ\&クラス プログラミング実践解説）
-% \changes{v1.2r}{2017/09/24}{相互参照のスペースファクターを補正}
+% \changes{v????}{????/??/??}{スペースファクターを補正}
 %    \begin{macrocode}
-%<platexrelease>\plIncludeInRelease{2017/10/14}{\@setref}
+%<platexrelease>\plIncludeInRelease{????/??/??}{\@setref}
 %<platexrelease>                   {Spacing after \ref in moving arguments}%
 %<*plcore|platexrelease>
 \def\@setref#1#2#3{%
@@ -445,9 +445,9 @@
 % の両条件を満たすノードを挿入します。ここでは|\vadjust{}|としました。
 %
 % このマクロは、\file{ltmiscen.dtx}で定義されています。
-% \changes{v1.2r}{2017/09/24}{\cs{verb}の冒頭の半角空白を保持}
+% \changes{v????}{????/??/??}{\cs{verb}の冒頭の半角空白を保持}
 %    \begin{macrocode}
-%<platexrelease>\plIncludeInRelease{2017/10/14}{\verb}
+%<platexrelease>\plIncludeInRelease{????/??/??}{\verb}
 %<platexrelease>                   {Preserve beginning space characters}%
 %<*plcore|platexrelease>
 \if@compatibility\else
@@ -503,9 +503,9 @@
 % \begin{macro}{\@startline}
 % tabbing環境の行で、中身が始め括弧類などで始まる場合、
 % 最初の項目だけJFMグルーが消えない現象に対処します。
-% \changes{v1.2r}{2017/09/24}{tabbing環境の行冒頭のJFMグル―を削除}
+% \changes{v????}{????/??/??}{tabbing環境の行冒頭のJFMグル―を削除}
 %    \begin{macrocode}
-%<platexrelease>\plIncludeInRelease{2017/10/14}{\@startline}
+%<platexrelease>\plIncludeInRelease{????/??/??}{\@startline}
 %<platexrelease>                   {Inhibit JFM glue at the beginning}%
 %<*plcore|platexrelease>
 \gdef\@startline{%
@@ -541,10 +541,6 @@
 % \section{\cs{inhibitglue}の簡略形}
 %
 % \begin{macro}{\<}
-% 最後に、|\inhibitglue|の簡略形を定義します。
-% このコマンドは、和文フォントのメトリック情報から、自動的に挿入される
-% グルーの挿入を禁止します。
-%
 % 2014年のp\TeX{}の|\inhibitglue|のバグ修正に伴い、
 % |\inhibitglue|が垂直モードでは効かなくなりました。
 % \LaTeX{}では垂直モードと水平モードの区別が隠されていますので、
@@ -552,9 +548,9 @@
 %
 % |\DeclareRobustCommand|を使うと|\protect|の影響で前方の文字に対する
 % |\inhibitglue|が効かなくなるので、e-\TeX{}の|\protected|が必要です。
-% \changes{v1.6i}{2017/09/24}{\cs{<}が段落頭でも効くようにした}
+% \changes{v????}{????/??/??}{\cs{<}が段落頭でも効くようにした}
 %    \begin{macrocode}
-%<platexrelease>\plIncludeInRelease{2017/10/14}{\<}
+%<platexrelease>\plIncludeInRelease{????/??/??}{\<}
 %<platexrelease>                   {\inhibitglue in vertical mode}%
 %<*pldefs|platexrelease>
 \ifx\protected\@undefined
@@ -599,10 +595,10 @@
 % 無効化しているので、|\textit{f\textup{a}}|で本来入るべきイタリック補正が
 % 入りませんでした。p3.2以降ではp\TeX{}の|\xkanjiskip|対策が不要になって
 % いますので、コミュニティ版では削除しました。
-% \changes{v1.6i}{2017/09/24}{2010年のp\TeX{}本体の修正により、v1.3iで入れた
+% \changes{v????}{????/??/??}{2010年のp\TeX{}本体の修正により、v1.3iで入れた
 %    対処が不要になっていたので削除}
 %    \begin{macrocode}
-%<platexrelease>\plIncludeInRelease{2017/10/14}{\check@nocorr@}
+%<platexrelease>\plIncludeInRelease{????/??/??}{\check@nocorr@}
 %<platexrelease>                   {Italic correction before \textt...}%
 %<*pldefs|platexrelease>
 \def \check@nocorr@ #1#2\nocorr#3\@nil {%
@@ -630,7 +626,7 @@
 %<platexrelease>\plIncludeInRelease{0000/00/00}{\check@nocorr@}
 %<platexrelease>                   {Italic correction before \textt...}%
 %<platexrelease>\def \check@nocorr@ #1#2\nocorr#3\@nil {%
-%<platexrelease>  \let \check@icl \relax % changed from \maybe@ic
+%<platexrelease>  \let \check@icl \relax% \maybe@ic から変更
 %<platexrelease>  \def \check@icr {\ifvmode \else \aftergroup \maybe@ic \fi}%
 %<platexrelease>  \def \reserved@a {\nocorr}%
 %<platexrelease>  \def \reserved@b {#1}%

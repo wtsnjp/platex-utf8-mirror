@@ -18,8 +18,8 @@
 %% File: plvers.dtx
 \def\pfmtname{pLaTeX2e}
 \def\pfmtversion
-   {2017/10/14}
-\def\ppatch@level{-1}
+   {2017/09/26}
+\def\ppatch@level{0}
 \def\plIncludeInRelease#1{\kernel@ifnextchar[%
   {\@plIncludeInRelease{#1}}
   {\@plIncludeInRelease{#1}[#1]}}
@@ -1011,26 +1011,16 @@
     \@latex@warning{Reference `#3' on page \thepage \space
               undefined}%
   \else
-    \expandafter#2#1\spacefactor\@m{}% change \null to \spacefactor\@m{}
+    \expandafter#2#1\relax{}% change \null to \relax{}
   \fi}
 \if@compatibility\else
-\def\verb{\relax\ifmmode\hbox\else\leavevmode\vadjust{}\fi
+\def\verb{\relax\ifmmode\hbox\else\leavevmode\fi
   \bgroup
     \verb@eol@error \let\do\@makeother \dospecials
     \verbatim@font\@noligs
     \language\l@nohyphenation
     \@ifstar\@sverb\@verb}
 \fi
-\gdef\@startline{%
-     \ifnum \@nxttabmar >\@hightab
-       \@badtab
-       \global\@nxttabmar \@hightab
-     \fi
-     \global\@curtabmar \@nxttabmar
-     \global\@curtab \@curtabmar
-     \global\setbox\@curline \hbox {}%
-     \@startfield
-     \strut\inhibitglue}
 \gdef\@stopfield{\null\color@endgroup\egroup}
 \newcommand\printglossary{\@input@{\jobname.gls}}
 \newcount\hour
@@ -1052,11 +1042,11 @@
   \edef\@preamble{%
     \@preamble{%
       \ifcase\@chnum
-        \hfil\inhibitglue\ignorespaces\@sharp\unskip\unskip\hfil % c
+        \hfil\mbox{\inhibitglue\ignorespaces\@sharp\unskip}\hfil % c
       \or
-        \hskip1sp\inhibitglue\ignorespaces\@sharp\unskip\unskip\hfil % l
+        \hskip1sp\mbox{\inhibitglue\ignorespaces\@sharp\unskip}\hfil % l
       \or
-        \hfil\hskip1sp\inhibitglue\ignorespaces\@sharp\unskip\unskip % r
+        \hfil\hskip1sp\mbox{\inhibitglue\ignorespaces\@sharp\unskip}% % r
       \fi}}}
 \def\@classv{\@addtopreamble{\@startpbox{\@nextchar}\mbox{}\inhibitglue\ignorespaces
 \@sharp\unskip\@endpbox}}
@@ -1122,15 +1112,11 @@
       \everyjob{\noexpand\typeout{%
         \pfmtname\space<\pfmtversion>\space
           (based on \expandafter\parse@@BANNER\platexBANNER)}}%
-    \else\ifnum\ppatch@level>0
+    \else
       \everyjob{\noexpand\typeout{%
         \pfmtname\space<\pfmtversion>+\ppatch@level\space
           (based on \expandafter\parse@@BANNER\platexBANNER)}}%
-    \else
-      \everyjob{\noexpand\typeout{%
-        \pfmtname\space<\pfmtversion>-pre\ppatch@level\space
-          (based on \expandafter\parse@@BANNER\platexBANNER)}}%
-    \fi\fi
+    \fi
   }
 \expandafter
 \endgroup \platexTMP
