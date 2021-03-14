@@ -157,6 +157,3 @@ pythontex-files-*/
 
 # Latexian
 TSWLatexianTemp*
-
-# tests
-tests/*.pdf
