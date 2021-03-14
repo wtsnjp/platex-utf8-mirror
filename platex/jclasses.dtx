@@ -58,15 +58,6 @@
 %   \cs{section},\cs{subsection},\cs{subsubsection}の前後空きの伸縮幅を修正。
 %   (ありがとうございます、鈴木た＠MILNさん)}
 % \changes{v1.6}{2006/06/27}{フォントコマンドを修正。ありがとう、ymtさん。}
-% \changes{v1.7}{2016/11/12}{ドキュメントに反して\cs{@maketitle}が
-%    空になっていなかったのを修正}
-% \changes{v1.7}{2016/11/12}{use \cs{@width} (sync with classes.dtx v1.3a)}
-% \changes{v1.7}{2016/11/12}{Replaced all \cs{hbox to} by
-%    \cs{hb@xt@} (sync with classes.dtx v1.3a)}
-% \changes{v1.7}{2016/11/12}{Moved \cs{@mkboth} out of heading
-%                            arg (sync with classes.dtx v1.4c)}
-% \changes{v1.7}{2016/11/12}{\cs{columnsep}と\cs{columnseprule}の
-%    変更を後ろに移動(sync with classes.dtx v1.4f)}
 % \fi
 %
 % \iffalse
@@ -96,7 +87,7 @@
 %<11pt&bk>\ProvidesFile{tbk11.clo}
 %<12pt&bk>\ProvidesFile{tbk12.clo}
 %</tate>
-  [2016/11/12 v1.7
+  [2006/06/27 v1.6
 %<article|report|book> Standard pLaTeX class]
 %<10pt|11pt|12pt>  Standard pLaTeX file (size option)]
 %<*driver>
@@ -1910,7 +1901,7 @@
 % \subsubsection{表題}
 %
 % \begin{macro}{\title}
-% \begin{macro}{\author}
+% \begin{macro}{\autor}
 % \begin{macro}{\date}
 % 文書のタイトル、著者、日付の情報のための、
 % これらの３つのコマンドは\file{latex.dtx}で提供されています。
@@ -2052,11 +2043,11 @@
       \else\hbox{\yoko$\m@th^{\@thefnmark}$}\fi}}%
 %<*tate>
     \long\def\@makefntext##1{\parindent 1zw\noindent
-       \hb@xt@ 2zw{\hss\@makefnmark}##1}%
+       \hbox to 2zw{\hss\@makefnmark}##1}%
 %</tate>
 %<*yoko>
      \long\def\@makefntext##1{\parindent 1em\noindent
-       \hb@xt@1.8em{\hss$\m@th^{\@thefnmark}$}##1}%
+       \hbox to1.8em{\hss$\m@th^{\@thefnmark}$}##1}%
 %</yoko>
     \if@twocolumn
       \ifnum \col@number=\@ne \@maketitle
@@ -2077,7 +2068,6 @@
   \setcounter{footnote}{0}%
   \global\let\thanks\relax
   \global\let\maketitle\relax
-  \global\let\@maketitle\relax
   \global\let\p@thanks\relax
   \global\let\@thanks\@empty
   \global\let\@author\@empty
@@ -2315,7 +2305,7 @@
 % そして本文、それから用語集や索引や奥付けなどの後付けです。
 %    \begin{macrocode}
 %<*book>
-\newcommand{\frontmatter}{%
+\newcommand\frontmatter{%
   \if@openright \cleardoublepage \else \clearpage \fi
   \@mainmatterfalse\pagenumbering{roman}}
 \newcommand{\mainmatter}{%
@@ -3289,7 +3279,7 @@
       \else #1: #2\relax\par\fi
   \else
     \global \@minipagefalse
-    \hb@xt@\hsize{\hfil\box\@tempboxa\hfil}%
+    \hbox to\hsize{\hfil\box\@tempboxa\hfil}%
   \fi
   \vskip\belowcaptionskip}
 %    \end{macrocode}
@@ -3591,7 +3581,7 @@
 % |\numberline|マクロを再定義します。
 %    \begin{macrocode}
 \newdimen\@lnumwidth
-\def\numberline#1{\hb@xt@\@lnumwidth{#1\hfil}}
+\def\numberline#1{\hbox to\@lnumwidth{#1\hfil}}
 %    \end{macrocode}
 % \end{macro}
 % \end{macro}
@@ -3650,11 +3640,6 @@
 %</report|book>
 %<article>  \section*{\contentsname
 %<!article>  \chapter*{\contentsname
-%    \end{macrocode}
-% |\tableofcontents|では、|\@mkboth|はheadingの中に入れてあります。
-% ほかの命令（|\listoffigures|など）については、|\@mkboth|はheadingの
-% 外に出してあります。これは\LaTeX の\file{classes.dtx}に合わせています。
-%    \begin{macrocode}
     \@mkboth{\contentsname}{\contentsname}%
   }\@starttoc{toc}%
 %<report|book>  \if@restonecol\twocolumn\fi
@@ -3676,7 +3661,7 @@
     {\leavevmode\large\bfseries
      \setlength\@lnumwidth{4zw}%
      #1\hfil\nobreak
-     \hb@xt@\@pnumwidth{\hss#2}}\par
+     \hbox to\@pnumwidth{\hss#2}}\par
     \nobreak
 %<article>    \if@compatibility
     \global\@nobreaktrue
@@ -3700,7 +3685,7 @@
       \leavevmode\bfseries
       \setlength\@lnumwidth{4zw}%
       \advance\leftskip\@lnumwidth \hskip-\leftskip
-      #1\nobreak\hfil\nobreak\hb@xt@\@pnumwidth{\hss#2}\par
+      #1\nobreak\hfil\nobreak\hbox to\@pnumwidth{\hss#2}\par
       \penalty\@highpenalty
     \endgroup
   \fi}
@@ -3721,7 +3706,7 @@
       \leavevmode\bfseries
       \setlength\@lnumwidth{1.5em}%
       \advance\leftskip\@lnumwidth \hskip-\leftskip
-      #1\nobreak\hfil\nobreak\hb@xt@\@pnumwidth{\hss#2}\par
+      #1\nobreak\hfil\nobreak\hbox to\@pnumwidth{\hss#2}\par
     \endgroup
   \fi}
 %</article>
@@ -3780,17 +3765,15 @@
 %
 % \begin{macro}{\listoffigures}
 % 図の一覧を作成します。
-% \changes{v1.7}{2016/11/12}{Moved \cs{@mkboth} out of heading
-%                            arg (sync with classes.dtx v1.4c)}
 %    \begin{macrocode}
 \newcommand{\listoffigures}{%
 %<*report|book>
   \if@twocolumn\@restonecoltrue\onecolumn
   \else\@restonecolfalse\fi
-  \chapter*{\listfigurename}%
+  \chapter*{\listfigurename
 %</report|book>
-%<article>    \section*{\listfigurename}%
-  \@mkboth{\listfigurename}{\listfigurename}%
+%<article>    \section*{\listfigurename
+  \@mkboth{\listfigurename}{\listfigurename}}%
   \@starttoc{lof}%
 %<report|book>  \if@restonecol\twocolumn\fi
 }
@@ -3808,17 +3791,15 @@
 % \begin{macro}{\listoftables}
 % \changes{v1.0c}{1995/12/28}{fix the \cs{listoftable} typo.}
 % 表の一覧を作成します。
-% \changes{v1.7}{2016/11/12}{Moved \cs{@mkboth} out of heading
-%                            arg (sync with classes.dtx v1.4c)}
 %    \begin{macrocode}
 \newcommand{\listoftables}{%
 %<*report|book>
   \if@twocolumn\@restonecoltrue\onecolumn
   \else\@restonecolfalse\fi
-  \chapter*{\listtablename}%
+  \chapter*{\listtablename
 %</report|book>
-%<article>    \section*{\listtablename}%
-  \@mkboth{\listtablename}{\listtablename}%
+%<article>    \section*{\listtablename
+  \@mkboth{\listtablename}{\listtablename}}%
   \@starttoc{lot}%
 %<report|book>  \if@restonecol\twocolumn\fi
 }
@@ -3852,12 +3833,10 @@
 %
 % \begin{environment}{thebibliography}
 % 参考文献や関連図書のリストを作成します。
-% \changes{v1.7}{2016/11/12}{Moved \cs{@mkboth} out of heading
-%                            arg (sync with classes.dtx v1.4c)}
 %    \begin{macrocode}
 \newenvironment{thebibliography}[1]
-%<article>{\section*{\refname}\@mkboth{\refname}{\refname}%
-%<report|book>{\chapter*{\bibname}\@mkboth{\bibname}{\bibname}%
+%<article>{\section*{\refname\@mkboth{\refname}{\refname}}%
+%<report|book>{\chapter*{\bibname\@mkboth{\bibname}{\bibname}}%
    \list{\@biblabel{\@arabic\c@enumiv}}%
         {\settowidth\labelwidth{\@biblabel{#1}}%
          \leftmargin\labelwidth
@@ -3914,19 +3893,12 @@
 %    \begin{macrocode}
 \newenvironment{theindex}
   {\if@twocolumn\@restonecolfalse\else\@restonecoltrue\fi
+   \columnseprule\z@ \columnsep 35\p@
 %<article>   \twocolumn[\section*{\indexname}]%
 %<report|book>   \twocolumn[\@makeschapterhead{\indexname}]%
    \@mkboth{\indexname}{\indexname}%
    \thispagestyle{jpl@in}\parindent\z@
-%    \end{macrocode}
-% パラメータ|\columnseprule|と|\columnsep|の変更は、|\twocolumn|が
-% 実行された後でなければなりません。そうしないと、索引の前のページ
-% にも影響してしまうためです。
-% \changes{v1.7}{2016/11/12}{\cs{columnsep}と\cs{columnseprule}の
-%    変更を後ろに移動(sync with classes.dtx v1.4f)}
-%    \begin{macrocode}
    \parskip\z@ \@plus .3\p@\relax
-   \columnseprule\z@ \columnsep 35\p@
    \let\item\@idxitem}
   {\if@restonecol\onecolumn\else\clearpage\fi}
 %    \end{macrocode}
@@ -3957,12 +3929,11 @@
 %
 % \begin{macro}{\footnoterule}
 % 本文と脚注の間に引かれる罫線です。
-% \changes{v1.7}{2016/11/12}{use \cs{@width} (sync with classes.dtx v1.3a)}
 %    \begin{macrocode}
 \renewcommand{\footnoterule}{%
   \kern-3\p@
-  \hrule\@width.4\columnwidth
-  \kern2.6\p@}
+  \hrule width .4\columnwidth
+  \kern 2.6\p@}
 %    \end{macrocode}
 % \end{macro}
 %
@@ -3977,16 +3948,14 @@
 % このマクロにしたがって脚注が組まれます。
 %
 % |\@makefnmark|は脚注記号を組み立てるマクロです。
-% \changes{v1.7}{2016/11/12}{Replaced all \cs{hbox to} by
-%    \cs{hb@xt@} (sync with classes.dtx v1.3a)}
 %    \begin{macrocode}
 %<*tate>
 \newcommand\@makefntext[1]{\parindent 1zw
-  \noindent\hb@xt@ 2zw{\hss\@makefnmark}#1}
+  \noindent\hbox to 2zw{\hss\@makefnmark}#1}
 %</tate>
 %<*yoko>
 \newcommand\@makefntext[1]{\parindent 1em
-  \noindent\hb@xt@ 1.8em{\hss\@makefnmark}#1}
+  \noindent\hbox to 1.8em{\hss\@makefnmark}#1}
 %</yoko>
 %    \end{macrocode}
 % \end{macro}
