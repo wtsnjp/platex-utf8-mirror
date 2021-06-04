@@ -3,7 +3,7 @@
 %
 %  Copyright 1994-2001 ASCII Corporation.
 %  Copyright (c) 2010 ASCII MEDIA WORKS
-%  Copyright (c) 2016-2020 Japanese TeX Development Community
+%  Copyright (c) 2016-2021 Japanese TeX Development Community
 %
 %  This file is part of the pLaTeX2e system (community edition).
 %  -------------------------------------------------------------
@@ -113,9 +113,9 @@
 % \changes{v1.3}{2018/09/02}{\file{platexrelease}バグ修正}
 % \changes{v1.3a}{2018/10/31}{\LaTeXe{}とp\LaTeXe{}の更新タイミングずれ対策を
 %    \file{plvers.dtx} (plfinal) から\file{plcore.dtx}へ移動、latexrelease対策
-%    (sync with ltfinal 2018/08/24 v2.1f)}
+%    (sync with ltfinal.dtx 2018/08/24 v2.1f)}
 % \changes{v1.3b}{2019/02/08}{中央揃えのセルでの\cs{unskip}対策
-%    (sync with lttab 2018/12/30 v1.1p)}
+%    (sync with lttab.dtx 2018/12/30 v1.1p)}
 % \changes{v1.3c}{2019/09/16}{Make \cs{AtBeginDvi} robust
 %    (sync with ltoutput.dtx 2019/08/27 v1.4e)}
 % \changes{v1.3c}{2019/09/16}{Make \cs{underline} robust
@@ -126,19 +126,22 @@
 % \changes{v1.3e}{2020/03/05}{合字処理を抑止しつつ\cs{xkanjiskip}は挿入}
 % \changes{v1.3f}{2020/09/26}{\cs{AtBeginDvi}を再定義しない
 %    (checked ltshipout.dtx 2020/09/21 v1.0c)}
-% \changes{v1.3f}{2020/09/26}{\cs{\_\_shipout_execute_cont:}を再定義
+% \changes{v1.3f}{2020/09/26}{\cs{\_\_shipout\_execute\_cont:}を再定義
 %    (checked ltshipout.dtx 2020/09/21 v1.0c)}
 % \changes{v1.3g}{2020/09/28}{縦組で空のフロートだけのページの
 %    フッタ(Issue 78)}
 % \changes{v1.3g}{2020/09/28}{\file{plexpl3}で定義した命令を使用}
-% \changes{v1.3h}{2021/03/14}{\LaTeXe~2021-05-01に伴う修正}
+% \changes{v1.3h}{2021/03/14}{\LaTeXe~2021-06-01に伴う修正}
+% \changes{v1.3i}{2021/03/25}{\cs{@outputpage}, \cs{@vtryfc}での、非横組時における
+%    \cs{@outputbox}の寸法補正のコードを別命令として切り出した}
+% \changes{v1.3j}{2021/06/03}{巻戻しコードのエラー修正}
 % \fi
 %
 % \iffalse
 %<*driver>
 \NeedsTeXFormat{pLaTeX2e}
 % \fi
-\ProvidesFile{plcore.dtx}[2020/09/28 v1.3g pLaTeX core file]
+\ProvidesFile{plcore.dtx}[2021/06/03 v1.3j pLaTeX core file]
 % \iffalse
 \documentclass{jltxdoc}
 \GetFileInfo{plcore.dtx}
@@ -502,6 +505,40 @@
 %</fltrace>
 %    \end{macrocode}
 %
+% \begin{macro}{\pltx@adjust@wd@outputbox}
+% |\@outputpage|内で実行されていた
+% \begin{quote}
+% 縦組の際に|\@outputbox|の内容が空のボックスだけの場合に、|\wd\@outputbox|が
+% 0ptになってしまい、結果としてフッタの位置がくるってしまっていた。
+% 0の|\hskip|を発生させると|\wd\@outputbox|の値が期待したものとなるので、
+% 縦組の場合はその方法で対処する。
+%
+% ただし、0の|\hskip|を発生させるとき、水平モードに入ってしまうと、たとえば
+% longtableパッケージを使用して表組途中で改ページするときに|\par -> {\vskip}|の
+% 無限ループが起きてしまいます。そこで、|\vbox|の中で発生させます。
+% \end{quote}
+% という処理を取り出したものです。
+%
+% \LaTeXe~2021-06-01では段落開始時の``para/*''フックが実装されますが、
+% それを一時的に無効化するために「プリミティブとしての」|\everypar|を
+% |\pdfprimitive\everypar|として呼び出しています。
+%    \begin{macrocode}
+%<*plcore|platexrelease>
+\def\pltx@adjust@wd@outputbox{%
+  \ifydir\else\vbox{\pdfprimitive\everypar{}\hskip\z@}\fi}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\pltx@adjust@wd@outputbox@vtryfc}
+% |\pltx@adjust@wd@outputbox|と同様の処理ですが、|\@vtryfc|では
+% |\vbox|の位置が異なります。
+%    \begin{macrocode}
+\def\pltx@adjust@wd@outputbox@vtryfc{%
+  \ifydir\else\pdfprimitive\everypar{}\hskip\z@\fi}
+%</plcore|platexrelease>
+%    \end{macrocode}
+% \end{macro}
+%
 % \begin{macro}{\@makecol}
 % このマクロが組み立てる部分の中心となります。
 % \file{ltoutput.dtx}で定義されているものです。
@@ -552,14 +589,11 @@
        \dimen@ \dp\@outputbox
        \unvbox \@outputbox
 %    \end{macrocode}
-% 縦組の際に|\@outputbox|の内容が空のボックスだけの場合に、|\wd\@outputbox|が
-% 0ptになってしまい、結果としてフッタの位置がくるってしまっていた。
-% 0の|\hskip|を発生させると|\wd\@outputbox|の値が期待したものとなるので、
-% 縦組の場合はその方法で対処する。
-%
-% ただし、0の|\hskip|を発生させるとき、水平モードに入ってしまうと、たとえば
-% longtableパッケージを使用して表組途中で改ページするときに|\par -> {\vskip}|の
-% 無限ループが起きてしまいます。そこで、|\vbox|の中で発生させます。
+% 次の行は以前は
+%\begin{verbatim}
+%\iftdir\vbox{\hskip\z@}\fi
+%\end{verbatim}
+% でしたが、|\pltx@adjust@wd@outputbox|として切り出しました。
 % \changes{v1.1j}{2001/05/10}{\cs{@makecol}で組み立てられる
 %    \cs{@outputbox}の大きさが、縦組で中身が空のボックスだけの場合も適正になる
 %    ように修正}
@@ -567,8 +601,10 @@
 %    ようにする\texttt{\cs{vskip}~-\cs{dimen@}}が縦組モードでは無効になっていたので修正}
 % \changes{v1.2h}{2016/09/01}{縦組でlongtableパッケージを使って表組の途中で改ページ
 %    するとき無限ループが起こる問題に対処(Issue 21)}
+% \changes{v1.3i}{2021/03/25}{非横組時における
+%    \cs{@outputbox}の寸法補正のコードを\cs{pltx@adjust@wd@outputbox}として切り出した}
 %    \begin{macrocode}
-       \iftdir\vbox{\hskip\z@}\fi
+       \pltx@adjust@wd@outputbox
        \vskip -\dimen@
        \@textbottom
        }%
@@ -823,15 +859,18 @@
 % それより昔の版では空白ページは発生しません。
 %
 % 対策方法は、\file{ltoutput.dtx}で定義されている|\@vtryfc|に
-% |\ifydir\else\hskip\z@\fi|の追加です（|\@makecol|と同様）。
+% |\ifydir\else\hskip\z@\fi|の追加です（|\@makecol|と同様）が、
+% 別命令|\pltx@adjust@wd@outputbox@vtryfc|として切り出しました。
 % \changes{v1.3g}{2020/09/28}{縦組で空のフロートだけのページの
 %    フッタ(Issue 78)}
+% \changes{v1.3i}{2021/03/25}{非横組時における
+%    \cs{@outputbox}の寸法補正のコードを\cs{pltx@adjust@wd@outputbox@vtryfc}として切り出した}
 %    \begin{macrocode}
 %<platexrelease>\plIncludeInRelease{2020/10/01}{\@vtryfc}
 %<platexrelease>                               {Empty float}%
 %<*plcore|platexrelease>
 \def\@vtryfc #1{%
-  \global\setbox\@outputbox\vbox{\ifydir\else\hskip\z@\fi}%
+  \global\setbox\@outputbox\vbox{\pltx@adjust@wd@outputbox@vtryfc}%
   \let\@elt\@wtryfc
   \@flsucceed
   \global\setbox\@outputbox \vbox to\@colht{%
@@ -1603,9 +1642,10 @@
 % ^^A 本当は、処理終了時に|\box\l__platex_shipout_dummy_box|して
 % ^^A メイン垂直リストに中身を戻したいのですが、
 % ^^A なぜか無限ループが起きるため実行していません。
-% \changes{v1.3f}{2020/09/26}{\cs{shipout-execute-cont}を再定義
+% \changes{v1.3f}{2020/09/26}{\cs{\_\_shipout\_execute\_cont:}を再定義
 %    (checked ltshipout.dtx 2020/09/21 v1.0c)}
 % \changes{v1.3g}{2020/09/28}{\file{plexpl3}で定義した命令を使用}
+% \changes{v1.3j}{2021/06/03}{巻戻しコードのエラー修正}
 %    \begin{macrocode}
 %</plcore>
 %<platexrelease>\plIncludeInRelease{2020/10/01}{\__shipout_execute_cont:}
@@ -1613,9 +1653,14 @@
 %<*plcore|platexrelease>
 \ifdefined\ExplSyntaxOn %--- expl3 available BEGIN
 \ExplSyntaxOn
-\if_cs_exist:N \__shipout_execute_cont:
-\cs_new_eq:NN \__platex_original_shipout_execute_cont: \__shipout_execute_cont:
-\box_new:N \l__platex_shipout_dummy_box
+\cs_if_exist:NT \__shipout_execute_cont: { %--- IF LEVEL 1 BEGIN
+\cs_if_exist:NF \__platex_original_shipout_execute_cont: {
+  \cs_new_eq:NN \__platex_original_shipout_execute_cont:
+                \__shipout_execute_cont:
+  }
+\cs_if_exist:NF \l__platex_shipout_dummy_box {
+    \box_new:N \l__platex_shipout_dummy_box
+  }
 \cs_set:Npn \__shipout_execute_cont:
   {
     % if \l_shipout_box is not a \yoko-box (= horizontal writing),
@@ -1645,19 +1690,22 @@
       %\box_use:N \l__platex_shipout_dummy_box
     }
   }
-\fi:
+}                                          %--- IF LEVEL 1 END
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{\__shipout_execute_nohooks_cont:}
-% \LaTeXe~2021-05-01では，同様の処理が|\__shipout_execute_nohooks_cont:|にも
-% 必要なので，それを行います．
-% \changes{v1.3h}{2021/03/14}{\LaTeXe~2021-05-01では
+% \LaTeXe~2021-06-01では、同様の処理が|\__shipout_execute_nohooks_cont:|にも
+% 必要なので、それを行います。
+% \changes{v1.3h}{2021/03/14}{\LaTeXe~2021-06-01では
 %                 \cs{\_\_shipout\_execute\_nohooks\_cont:}が追加された}
+% \changes{v1.3j}{2021/06/03}{巻戻しコードのエラー修正}
 %    \begin{macrocode}
-\if_cs_exist:N \__shipout_execute_nohooks_cont:
-\cs_new_eq:NN \__platex_original_shipout_execute_nohooks_cont:
-              \__shipout_execute_nohooks_cont:
+\cs_if_exist:NT \__shipout_execute_nohooks_cont: { %--- IF LEVEL 1 BEGIN
+\cs_if_exist:NF \__platex_original_shipout_execute_nohooks_cont: {
+  \cs_new_eq:NN \__platex_original_shipout_execute_nohooks_cont:
+                \__shipout_execute_nohooks_cont:
+  }
 \cs_set:Npn \__shipout_execute_nohooks_cont:
   {
     \platex_if_box_yoko:NF \l__shipout_raw_box {
@@ -1677,7 +1725,7 @@
         }
     }
   }
-\fi:
+}                                                  %--- IF LEVEL 1 END
 \ExplSyntaxOff
 \fi                     %--- expl3 available END
 %</plcore|platexrelease>
@@ -1844,9 +1892,10 @@
 % 使えるように再定義されます。
 %
 % \changes{v1.0a}{1995/04/07}{組方向の判定をボックスの外でするようにした}
-% \changes{v1.3h}{2021/03/14}{\LaTeXe~2021-05-01では\cs{par}が入る}
+% \changes{v1.3h}{2021/03/14}{\LaTeXe~2021-06-01では\cs{par}が入る
+%    (sync with ltfloat.dtx 2021/02/10 v1.2e)}
 %    \begin{macrocode}
-%<platexrelease>\plIncludeInRelease{2021/03/14}{\@footnotetext}
+%<platexrelease>\plIncludeInRelease{2021/06/01}{\@footnotetext}
 %<platexrelease>                   {Adapt to ltfloat.dtx (2021-03-03 v1.2f)}%
 %<*plcore|platexrelease>
 %    \end{macrocode}
@@ -2251,7 +2300,7 @@
 %    なっていたバグを修正}
 % \changes{v1.2x}{2018/03/01}{\cs{removejfmglue}があれば利用するようにした}
 % \changes{v1.3b}{2019/02/08}{中央揃えのセルでの\cs{unskip}対策
-%    (sync with lttab 2018/12/30 v1.1p)}
+%    (sync with lttab.dtx 2018/12/30 v1.1p)}
 % ^^A なぜか v1.3b の変更は本家 latexrelease に含まれないのでそれに合わせた
 %    \begin{macrocode}
 %</plcore>
@@ -2755,7 +2804,7 @@
 % \section{\LaTeXe{}とp\LaTeXe{}の更新タイミングずれ対策}
 % \changes{v1.3a}{2018/10/31}{\LaTeXe{}とp\LaTeXe{}の更新タイミングずれ対策を
 %    \file{plvers.dtx} (plfinal) から\file{plcore.dtx}へ移動、latexrelease対策
-%    (sync with ltfinal 2018/08/24 v2.1f)}
+%    (sync with ltfinal.dtx 2018/08/24 v2.1f)}
 %
 % \begin{macro}{\l@nohyphenation}
 % 通常はBabelのハイフネーション定義により提供されるパラメータです。
