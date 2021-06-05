@@ -1,7 +1,7 @@
 # Batch script for unofficial mirror of pLaTeX in UTF-8.
 # Public domain.
 
-REPO_TOP=$(pwd)
+REPO_TOP=$(cd $(dirname $0); pwd)
 ORIGINAL_DIR="$REPO_TOP/platex-original/"
 TARGET_DIR="$REPO_TOP/platex/"
 ORIGINAL_BRANCH="master"
